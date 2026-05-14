@@ -1,0 +1,15 @@
+{
+  "seed": 20260513,
+  "attack_splits": [
+    "synthetic_test",
+    "real_external_test"
+  ],
+  "candidate_methods": [
+    "M2 dynamic degree product",
+    "M4 dynamic community internal / pair",
+    "M5 dynamic edge betweenness",
+    "M7 dynamic community size / pair",
+    "M8 dynamic community bridge-degree"
+  ],
+  "oracle_rule": "Select the candidate edge with the lowest next-step GCC ratio; ties prefer M5, then M4, M7, M8, M2."
+}

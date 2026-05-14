@@ -1,0 +1,2 @@
+﻿auc,graph_id,graph_type,method,remove_ratio_gcc_le_0_1,remove_ratio_gcc_le_0_2,remove_ratio_gcc_le_0_5,split
+0.22502305128023264,football,real,Expanded oracle top-5 h1,0.43882544861337686,0.2838499184339315,0.15497553017944535,real_external_test

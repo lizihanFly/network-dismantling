@@ -1,0 +1,4 @@
+﻿auc,graph_id,graph_type,method,remove_ratio_gcc_le_0_1,remove_ratio_gcc_le_0_2,remove_ratio_gcc_le_0_5,split
+0.4564621113069183,synthetic_test_000,sbm,Expanded oracle top-5 h1,0.7688022284122563,0.6239554317548747,0.4763231197771588,synthetic_test
+0.33155197075651616,synthetic_test_001,sbm,Expanded oracle top-5 h1,0.5495867768595041,0.4628099173553719,0.2768595041322314,synthetic_test
+0.36223207686622316,synthetic_test_002,sbm,Expanded oracle top-5 h1,0.6090909090909091,0.5,0.36363636363636365,synthetic_test

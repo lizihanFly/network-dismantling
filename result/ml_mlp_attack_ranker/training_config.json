@@ -1,0 +1,29 @@
+{
+  "target": "edge_betweenness_rank_pct",
+  "seed": 20260513,
+  "hidden_layers": [
+    64,
+    32
+  ],
+  "max_iter": 250,
+  "train_rows": 46276,
+  "feature_count": 36,
+  "attack_splits": [
+    "synthetic_test",
+    "real_external_test"
+  ],
+  "excluded_columns": [
+    "community_strength",
+    "edge_betweenness",
+    "edge_betweenness_rank",
+    "edge_betweenness_rank_pct",
+    "gcc_delta",
+    "gcc_delta_rank",
+    "gcc_delta_rank_pct",
+    "graph_id",
+    "graph_type",
+    "split",
+    "u",
+    "v"
+  ]
+}

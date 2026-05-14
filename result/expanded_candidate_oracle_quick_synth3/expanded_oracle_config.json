@@ -1,0 +1,21 @@
+{
+  "seed": 20260513,
+  "attack_splits": [
+    "synthetic_test"
+  ],
+  "top_k": 5,
+  "rollout_depths": [
+    1
+  ],
+  "candidate_methods": [
+    "M2 dynamic degree product",
+    "M4 dynamic community internal / pair",
+    "M5 dynamic edge betweenness",
+    "M7 dynamic community size / pair",
+    "M8 dynamic community bridge-degree"
+  ],
+  "graph_ids": [],
+  "max_graphs": 3,
+  "skip_baselines": true,
+  "oracle_rule": "Expanded top-k candidate pool; h1 minimizes next-step GCC, h>1 minimizes greedy rollout average GCC."
+}
