@@ -463,7 +463,15 @@ def evaluate_candidate_ranking(model, df, feature_cols):
     return pd.DataFrame(rows), result
 
 
-def attack_curve_for_model(group, model, feature_cols, top_k):
+def should_stop_attack(step, original_m, max_attack_steps, attack_max_remove_ratio):
+    if max_attack_steps and step >= max_attack_steps:
+        return True
+    if attack_max_remove_ratio and step / float(original_m) >= attack_max_remove_ratio:
+        return True
+    return False
+
+
+def attack_curve_for_model(group, model, feature_cols, top_k, max_attack_steps, attack_max_remove_ratio):
     graph = reconstruct_graph(group)
     original_n = graph.number_of_nodes()
     original_m = max(1, graph.number_of_edges())
@@ -474,7 +482,9 @@ def attack_curve_for_model(group, model, feature_cols, top_k):
     }
     rows = [curve_row(meta, "Candidate damage predictor", 0, original_m, gcc_ratio(graph, original_n))]
     step = 0
-    while graph.number_of_edges() > 0:
+    while graph.number_of_edges() > 0 and not should_stop_attack(
+        step, original_m, max_attack_steps, attack_max_remove_ratio
+    ):
         edge_info = candidate_edges(graph, top_k)
         candidate_rows = dynamic_features_for_candidates(graph, edge_info, original_n, meta, step)
         if not candidate_rows:
@@ -491,7 +501,7 @@ def attack_curve_for_model(group, model, feature_cols, top_k):
     return rows
 
 
-def dynamic_attack_curve(group, method):
+def dynamic_attack_curve(group, method, max_attack_steps, attack_max_remove_ratio):
     graph = reconstruct_graph(group)
     original_n = graph.number_of_nodes()
     original_m = max(1, graph.number_of_edges())
@@ -502,7 +512,9 @@ def dynamic_attack_curve(group, method):
     }
     rows = [curve_row(meta, method, 0, original_m, gcc_ratio(graph, original_n))]
     step = 0
-    while graph.number_of_edges() > 0:
+    while graph.number_of_edges() > 0 and not should_stop_attack(
+        step, original_m, max_attack_steps, attack_max_remove_ratio
+    ):
         edge = choose_dynamic_edge(graph, method)
         if edge is None or not graph.has_edge(*edge):
             break
@@ -547,7 +559,18 @@ def summarize_curve(curve_df):
     return row
 
 
-def evaluate_attack_curves(model, eval_df, feature_cols, top_k, attack_splits, max_eval_graphs, graph_ids, skip_baselines):
+def evaluate_attack_curves(
+    model,
+    eval_df,
+    feature_cols,
+    top_k,
+    attack_splits,
+    max_eval_graphs,
+    graph_ids,
+    skip_baselines,
+    max_attack_steps,
+    attack_max_remove_ratio,
+):
     df = eval_df[eval_df["split"].isin(attack_splits)].copy()
     if graph_ids:
         df = df[df["graph_id"].isin(graph_ids)].copy()
@@ -560,12 +583,16 @@ def evaluate_attack_curves(model, eval_df, feature_cols, top_k, attack_splits, m
     for index, (_, group) in enumerate(groups, start=1):
         label = f"{group['split'].iloc[0]}/{group['graph_id'].iloc[0]}"
         print(f"[attack {index:03d}/{len(groups):03d}] {label}", flush=True)
-        rows = attack_curve_for_model(group, model, feature_cols, top_k)
+        rows = attack_curve_for_model(
+            group, model, feature_cols, top_k, max_attack_steps, attack_max_remove_ratio
+        )
         curve_rows.extend(rows)
         summary_rows.append(summarize_curve(pd.DataFrame(rows)))
         if not skip_baselines:
             for method in BASELINE_METHODS:
-                baseline_rows = dynamic_attack_curve(group, method)
+                baseline_rows = dynamic_attack_curve(
+                    group, method, max_attack_steps, attack_max_remove_ratio
+                )
                 curve_rows.extend(baseline_rows)
                 summary_rows.append(summarize_curve(pd.DataFrame(baseline_rows)))
     return pd.DataFrame(curve_rows), pd.DataFrame(summary_rows)
@@ -683,7 +710,9 @@ def parse_args():
     parser.add_argument("--max-train-graphs", type=int, default=0)
     parser.add_argument("--max-eval-graphs", type=int, default=0)
     parser.add_argument("--max-train-steps", type=int, default=80)
+    parser.add_argument("--max-attack-steps", type=int, default=0)
     parser.add_argument("--train-max-remove-ratio", type=float, default=0.35)
+    parser.add_argument("--attack-max-remove-ratio", type=float, default=0.0)
     parser.add_argument("--rollout-policy", choices=["m5", "damage_oracle", "random"], default="m5")
     parser.add_argument("--skip-baselines", action="store_true")
     parser.add_argument("--out-dir", default=str(OUT_DIR))
@@ -736,6 +765,8 @@ def main():
         max_eval_graphs=args.max_eval_graphs,
         graph_ids=graph_ids,
         skip_baselines=args.skip_baselines,
+        max_attack_steps=args.max_attack_steps,
+        attack_max_remove_ratio=args.attack_max_remove_ratio,
     )
     aggregate_df = aggregate_summary(attack_summary_df)
 

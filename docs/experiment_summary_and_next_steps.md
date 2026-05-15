@@ -458,6 +458,200 @@
 - `random_forest`
 - `gbdt`
 
+### 8.1 当前具体模型
+
+当前优先使用的是 `gbdt`，即 Gradient Boosting Decision Tree 回归模型。
+
+选择它作为第一版 baseline 的原因：
+
+- 数据量还不算大，GBDT 在中小规模表格特征上通常比 MLP 更稳。
+- 当前特征主要是人工结构特征，不是原始图张量，树模型适合处理这类非线性表格数据。
+- GBDT 不需要特征标准化，也不太依赖复杂调参。
+- 它训练快，方便我们快速判断 damage prediction 目标是否有潜力。
+
+当前脚本里的 GBDT 设置：
+
+- `n_estimators = max_iter`
+- `learning_rate = 0.05`
+- `max_depth = 3`
+- `random_state = 20260513`
+
+它学习的是回归目标：
+
+```text
+target = gcc_delta
+```
+
+也就是候选边删除前后的最大连通分量占比下降量：
+
+```text
+gcc_delta = gcc_before - gcc_after
+```
+
+### 8.2 训练数据如何生成
+
+训练不是直接使用原始图的所有边，而是在动态攻击过程中采样状态。
+
+每个训练图上重复以下过程：
+
+1. 当前图为 `G_t`。
+2. 从 M2/M4/M5/M7/M8 各取 top-k 边。
+3. 合并去重，得到 candidate set。
+4. 对 candidate set 中每条边临时删除一次，计算真实 `gcc_delta`。
+5. 保存候选边的动态结构特征和 `gcc_delta` 标签。
+6. 用 rollout policy 删除一条边，让图进入下一状态 `G_{t+1}`。
+
+当前默认 rollout policy 是 `m5`。
+
+这意味着训练状态主要来自 M5 攻击轨迹。这样做的好处是训练数据质量较高，坏处是状态分布会偏向 M5。后续如果要增强探索，可以混入：
+
+- `damage_oracle` rollout；
+- random rollout；
+- M4/M7 rollout；
+- 模型自身 rollout。
+
+### 8.3 输入特征
+
+每条候选边的输入特征包括四类。
+
+图状态特征：
+
+- 当前节点数；
+- 当前边数；
+- 当前 GCC ratio；
+- 当前 density；
+- 当前平均度；
+- 当前社区数量；
+- 当前删除比例。
+
+边两端节点特征：
+
+- degree；
+- degree product；
+- degree sum；
+- degree difference；
+- clustering；
+- pagerank；
+- node betweenness。
+
+社区结构特征：
+
+- 是否跨社区；
+- 两端社区大小；
+- 两端社区内部边数；
+- 两社区之间的边数；
+- M4/M7/M8 分数。
+
+候选来源特征：
+
+- 是否来自 M2 top-k；
+- 是否来自 M4 top-k；
+- 是否来自 M5 top-k；
+- 是否来自 M7 top-k；
+- 是否来自 M8 top-k；
+- 被几个启发式方法同时提名；
+- 在候选方法中的最小 rank。
+
+这些特征的设计目的不是让模型复制某个启发式方法，而是让模型知道：
+
+- 这条边本身的局部结构；
+- 它在社区结构中的位置；
+- 哪些传统方法认为它重要；
+- 当前网络已经被攻击到什么阶段。
+
+### 8.4 训练和推理方式
+
+训练阶段：
+
+```text
+候选边动态特征 -> GBDT -> 预测 gcc_delta
+```
+
+损失函数是回归误差，由 sklearn 的 `GradientBoostingRegressor` 内部优化平方误差。
+
+推理阶段，也就是真正攻击时：
+
+1. 在当前图上重新生成 candidate set。
+2. 给每条候选边提取同样的动态特征。
+3. 用模型预测 `pred_gcc_delta`。
+4. 删除 `pred_gcc_delta` 最大的边。
+5. 更新图结构，进入下一步。
+
+因此，这个方法是一个动态策略，不是静态一次性排序。
+
+### 8.5 当前 probe 结果
+
+已跑一个小规模 synthetic probe：
+
+```powershell
+D:\ana\python.exe scripts\train_candidate_damage_predictor.py --top-k 5 --max-train-graphs 8 --max-eval-graphs 2 --max-train-steps 30 --train-max-remove-ratio 0.15 --max-attack-steps 60 --attack-max-remove-ratio 0.15 --eval-splits synthetic_test --attack-splits synthetic_test --out-dir result\candidate_damage_predictor_synth_probe_with_baselines
+```
+
+这个 probe 的含义：
+
+- 训练图：8 个 synthetic train 图；
+- 评估图：2 个 synthetic test 图；
+- candidate set：M2/M4/M5/M7/M8 各 top-5；
+- 每个训练图最多采样 30 个攻击状态；
+- 训练采样最多到 15% 删除比例；
+- 攻击评估也只看前 15% 删除比例。
+
+选择这种受限评估的原因是完整动态评估非常慢，尤其是每一步都要重算 edge betweenness 和 Louvain。先比较早期攻击阶段，可以快速判断方向是否有信号。
+
+当前结果：
+
+| Method | synthetic_test mean AUC, first 15% removal |
+| --- | ---: |
+| M5 dynamic edge betweenness | 0.096824 |
+| Candidate damage predictor | 0.099799 |
+| M2 dynamic degree product | 0.104301 |
+| M4 dynamic community internal / pair | 0.104301 |
+| M7 dynamic community size / pair | 0.104301 |
+| M8 dynamic community bridge-degree | 0.104301 |
+
+候选排序质量：
+
+| Metric | Value |
+| --- | ---: |
+| states | 60 |
+| mean candidate count | 19.28 |
+| mean top1 hit | 0.950 |
+| mean chosen/best delta ratio | 0.625 |
+| mean Spearman | 0.037 |
+| mean Kendall | 0.033 |
+
+解释：
+
+- damage predictor 已经明显优于 M2/M4/M7/M8 的早期曲线。
+- 它接近 M5，但还没有超过 M5。
+- `top1_hit` 很高，但 `chosen/best delta ratio` 只有 0.625，说明很多状态里真实 damage 非常稀疏，命中 top damage 的次数不完全等价于拿到最大收益。
+- Spearman/Kendall 较低，说明模型更像是在识别少数高 damage 候选，而不是完整排序所有候选边。
+
+当前结论：
+
+- damage prediction 方向能跑通，并且比普通弱启发式方法更好。
+- 但第一版 one-step GBDT 还没有稳定超过 M5。
+- 下一步应优先改进训练目标和候选集，而不是立刻上完整 RL。
+
+### 8.6 接下来怎么改进
+
+优先级从高到低：
+
+1. 增加候选多样性  
+   在启发式 top-k 之外加入 random candidates、桥边候选、跨社区边候选，降低候选池被 M5/M4/M7 限制的风险。
+
+2. 从 one-step damage 改到 h-step damage  
+   当前 `gcc_delta` 只看删一条边后的立刻下降。后续应加入 `h_step_gcc_drop`，比如删除当前候选边后，用 M5 或模型 rollout 3-5 步，看多步 GCC 下降。
+
+3. 改用 ranking loss  
+   现在是回归 `gcc_delta`。但攻击本质上是“在候选边里选最好的一条”，所以 pairwise/listwise ranking loss 可能比 MSE 更合适。
+
+4. 增加训练状态分布  
+   目前默认 rollout 是 M5。后续可以混合 M5、M4、M7、random、damage_oracle，让模型看到更多非 M5 状态。
+
+5. 再上 GNN edge scorer  
+   等 damage target 显示出稳定信号后，用 GraphSAGE/GAT 学节点表示，再给候选边打分。
+
 一个最小 smoke test 已跑通：
 
 ```powershell
