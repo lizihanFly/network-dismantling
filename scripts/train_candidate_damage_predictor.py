@@ -102,6 +102,71 @@ def gcc_delta_for_edge(graph, edge, original_n):
     return max(0.0, before - after)
 
 
+def rollout_edge(graph, policy, top_k, random_candidate_count, bridge_top_k, original_n, seed_offset):
+    if policy == "m5":
+        return choose_dynamic_edge(graph, "M5 dynamic edge betweenness")
+    edge_info = candidate_edges(
+        graph,
+        top_k,
+        random_candidate_count=random_candidate_count,
+        bridge_top_k=bridge_top_k,
+        seed_offset=seed_offset,
+    )
+    if not edge_info:
+        return None
+    if policy == "damage_oracle":
+        return max(
+            edge_info,
+            key=lambda candidate: (
+                gcc_delta_for_edge(graph, candidate, original_n),
+                -edge_sort_key(candidate)[0],
+                -edge_sort_key(candidate)[1],
+            ),
+        )
+    if policy == "random":
+        rng = random.Random(SEED + seed_offset)
+        return rng.choice(sorted(edge_info))
+    raise ValueError(f"Unsupported damage rollout policy: {policy}")
+
+
+def h_step_gcc_delta_for_edge(
+    graph,
+    edge,
+    original_n,
+    horizon,
+    rollout_policy,
+    top_k,
+    random_candidate_count,
+    bridge_top_k,
+    seed_offset,
+):
+    if horizon <= 1:
+        return gcc_delta_for_edge(graph, edge, original_n)
+    if not graph.has_edge(*edge):
+        return 0.0
+
+    before = gcc_ratio(graph, original_n)
+    sim_graph = graph.copy()
+    sim_graph.remove_edge(*edge)
+    for depth in range(horizon - 1):
+        if sim_graph.number_of_edges() == 0:
+            break
+        rollout = rollout_edge(
+            sim_graph,
+            rollout_policy,
+            top_k,
+            random_candidate_count,
+            bridge_top_k,
+            original_n,
+            seed_offset + depth + 1,
+        )
+        if rollout is None or not sim_graph.has_edge(*rollout):
+            break
+        sim_graph.remove_edge(*rollout)
+    after = gcc_ratio(sim_graph, original_n)
+    return max(0.0, before - after)
+
+
 def louvain_partition(graph):
     if graph.number_of_edges() == 0:
         return {node: 0 for node in graph.nodes()}
@@ -224,7 +289,19 @@ def candidate_edges(graph, top_k, random_candidate_count=0, bridge_top_k=0, seed
     return edge_info
 
 
-def dynamic_features_for_candidates(graph, edge_info, original_n, meta, step):
+def dynamic_features_for_candidates(
+    graph,
+    edge_info,
+    original_n,
+    meta,
+    step,
+    damage_horizon=1,
+    damage_rollout_policy="m5",
+    top_k=5,
+    random_candidate_count=0,
+    bridge_top_k=0,
+    compute_target=True,
+):
     if not edge_info:
         return []
 
@@ -253,6 +330,21 @@ def dynamic_features_for_candidates(graph, edge_info, original_n, meta, step):
         internal_v = internal_edges[cv]
         degree_product = degrees[u] * degrees[v]
         source_flags = {f"source_{source}": int(source in info["sources"]) for source in SOURCE_LABELS}
+
+        if compute_target:
+            target_delta = h_step_gcc_delta_for_edge(
+                graph,
+                edge,
+                original_n,
+                damage_horizon,
+                damage_rollout_policy,
+                top_k,
+                random_candidate_count,
+                bridge_top_k,
+                seed_offset=step * 1009 + u * 9176 + v,
+            )
+        else:
+            target_delta = 0.0
 
         row = {
             "split": meta["split"],
@@ -299,7 +391,7 @@ def dynamic_features_for_candidates(graph, edge_info, original_n, meta, step):
             "m4_score": (internal_u * internal_v / float(pair_count)) if is_inter and pair_count else 0.0,
             "m7_score": (community_size_u * community_size_v / float(pair_count)) if is_inter and pair_count else 0.0,
             "m8_score": ((community_size_u * community_size_v / float(pair_count)) * degree_product) if is_inter and pair_count else 0.0,
-            "gcc_delta": gcc_delta_for_edge(graph, edge, original_n),
+            "gcc_delta": target_delta,
         }
         row.update(source_flags)
         rows.append(row)
@@ -334,6 +426,8 @@ def collect_candidate_rows_for_graph(
     top_k,
     random_candidate_count,
     bridge_top_k,
+    damage_horizon,
+    damage_rollout_policy,
     max_steps,
     max_remove_ratio,
     rollout_policy,
@@ -361,7 +455,21 @@ def collect_candidate_rows_for_graph(
             bridge_top_k=bridge_top_k,
             seed_offset=original_m * 1009 + step,
         )
-        rows.extend(dynamic_features_for_candidates(graph, edge_info, original_n, meta, step))
+        rows.extend(
+            dynamic_features_for_candidates(
+                graph,
+                edge_info,
+                original_n,
+                meta,
+                step,
+                damage_horizon=damage_horizon,
+                damage_rollout_policy=damage_rollout_policy,
+                top_k=top_k,
+                random_candidate_count=random_candidate_count,
+                bridge_top_k=bridge_top_k,
+                compute_target=True,
+            )
+        )
 
         if rollout_policy == "m5":
             edge = choose_dynamic_edge(graph, "M5 dynamic edge betweenness")
@@ -394,6 +502,8 @@ def build_candidate_dataset(
     top_k,
     random_candidate_count,
     bridge_top_k,
+    damage_horizon,
+    damage_rollout_policy,
     max_steps,
     max_remove_ratio,
     max_graphs,
@@ -418,6 +528,8 @@ def build_candidate_dataset(
                 top_k=top_k,
                 random_candidate_count=random_candidate_count,
                 bridge_top_k=bridge_top_k,
+                damage_horizon=damage_horizon,
+                damage_rollout_policy=damage_rollout_policy,
                 max_steps=max_steps,
                 max_remove_ratio=max_remove_ratio,
                 rollout_policy=rollout_policy,
@@ -554,7 +666,17 @@ def attack_curve_for_model(
             bridge_top_k=bridge_top_k,
             seed_offset=original_m * 1009 + step,
         )
-        candidate_rows = dynamic_features_for_candidates(graph, edge_info, original_n, meta, step)
+        candidate_rows = dynamic_features_for_candidates(
+            graph,
+            edge_info,
+            original_n,
+            meta,
+            step,
+            top_k=top_k,
+            random_candidate_count=random_candidate_count,
+            bridge_top_k=bridge_top_k,
+            compute_target=False,
+        )
         if not candidate_rows:
             break
         candidate_df = pd.DataFrame(candidate_rows)
@@ -741,9 +863,9 @@ def write_notes(aggregate_df, candidate_aggregate_df, args):
     lines = [
         "# Candidate Damage Predictor",
         "",
-        "This experiment changes the supervised target from teacher-rank imitation to direct one-step damage prediction.",
+        f"This experiment changes the supervised target from teacher-rank imitation to direct {args.damage_horizon}-step damage prediction.",
         "",
-        "At each dynamic state, candidates are built from the top-k edges suggested by M2/M4/M5/M7/M8. The model predicts `gcc_delta` for each candidate and removes the edge with the largest predicted damage.",
+        "At each dynamic state, candidates are built from M2/M4/M5/M7/M8 plus optional random and bridge candidates. The model predicts candidate damage and removes the edge with the largest predicted damage.",
         "",
         "## Config",
         "",
@@ -751,6 +873,8 @@ def write_notes(aggregate_df, candidate_aggregate_df, args):
         f"- top_k={args.top_k}",
         f"- random_candidate_count={args.random_candidates}",
         f"- bridge_top_k={args.bridge_top_k}",
+        f"- damage_horizon={args.damage_horizon}",
+        f"- damage_rollout_policy={args.damage_rollout_policy}",
         f"- rollout_policy={args.rollout_policy}",
         f"- max_train_steps={args.max_train_steps}",
         f"- train_max_remove_ratio={args.train_max_remove_ratio}",
@@ -804,6 +928,18 @@ def parse_args():
     parser.add_argument("--max-attack-steps", type=int, default=0)
     parser.add_argument("--train-max-remove-ratio", type=float, default=0.35)
     parser.add_argument("--attack-max-remove-ratio", type=float, default=0.0)
+    parser.add_argument(
+        "--damage-horizon",
+        type=int,
+        default=1,
+        help="Number of deletion steps used to label candidate damage. 1 is one-step gcc_delta.",
+    )
+    parser.add_argument(
+        "--damage-rollout-policy",
+        choices=["m5", "damage_oracle", "random"],
+        default="m5",
+        help="Policy used after the first candidate deletion when damage_horizon > 1.",
+    )
     parser.add_argument("--rollout-policy", choices=["m5", "damage_oracle", "random"], default="m5")
     parser.add_argument("--skip-baselines", action="store_true")
     parser.add_argument("--out-dir", default=str(OUT_DIR))
@@ -822,6 +958,8 @@ def main():
         top_k=args.top_k,
         random_candidate_count=args.random_candidates,
         bridge_top_k=args.bridge_top_k,
+        damage_horizon=args.damage_horizon,
+        damage_rollout_policy=args.damage_rollout_policy,
         max_steps=args.max_train_steps,
         max_remove_ratio=args.train_max_remove_ratio,
         max_graphs=args.max_train_graphs,
@@ -838,6 +976,8 @@ def main():
         top_k=args.top_k,
         random_candidate_count=args.random_candidates,
         bridge_top_k=args.bridge_top_k,
+        damage_horizon=args.damage_horizon,
+        damage_rollout_policy=args.damage_rollout_policy,
         max_steps=args.max_train_steps,
         max_remove_ratio=args.train_max_remove_ratio,
         max_graphs=args.max_eval_graphs,
@@ -885,6 +1025,8 @@ def main():
                 "top_k": args.top_k,
                 "random_candidates": args.random_candidates,
                 "bridge_top_k": args.bridge_top_k,
+                "damage_horizon": args.damage_horizon,
+                "damage_rollout_policy": args.damage_rollout_policy,
                 "model_type": args.model_type,
             },
             handle,

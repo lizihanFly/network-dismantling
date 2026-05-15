@@ -720,6 +720,79 @@ D:\ana\python.exe scripts\train_candidate_damage_predictor.py --top-k 5 --random
 - 但它仍然没有超过 M5，说明 one-step `gcc_delta` + GBDT 还不足以稳定打败 edge betweenness。
 - 下一步不应只继续加随机候选，而应转向多步目标 `h_step_gcc_drop` 或 ranking loss。
 
+### 8.8 已加入 h-step damage 标签
+
+已经在 `scripts/train_candidate_damage_predictor.py` 中加入两个新参数：
+
+```powershell
+--damage-horizon
+--damage-rollout-policy
+```
+
+含义：
+
+- `--damage-horizon 1`：原来的 one-step `gcc_delta`，只看删除当前候选边后的立即 GCC drop。
+- `--damage-horizon 3`：先删除当前候选边，再用 `--damage-rollout-policy` 继续模拟 2 步，最后计算总 GCC drop。
+- `--damage-rollout-policy m5`：候选边之后的模拟步骤使用 M5 dynamic edge betweenness。
+
+这样做的原因：
+
+- one-step damage 太短视。
+- 有些边立即 damage 不大，但会让后续几步更容易打碎网络。
+- h-step 标签更接近最终攻击曲线 AUC。
+
+实现细节：
+
+1. 对每条候选边复制当前图。
+2. 在复制图中删除该候选边。
+3. 如果 `damage_horizon > 1`，继续用 rollout policy 删除后续边。
+4. 用原状态 GCC 和 rollout 后 GCC 的差作为训练标签。
+5. 真正攻击推理时不计算真实 h-step 标签，只提取特征并用模型预测，避免推理阶段过慢。
+
+已跑一个 h=3 smoke test，确认多步标签、训练、预测、攻击链路正常。
+
+随后跑了一个小规模 h=3 synthetic probe：
+
+```powershell
+D:\ana\python.exe scripts\train_candidate_damage_predictor.py --top-k 5 --random-candidates 6 --bridge-top-k 6 --damage-horizon 3 --damage-rollout-policy m5 --max-train-graphs 4 --max-eval-graphs 2 --max-train-steps 15 --train-max-remove-ratio 0.10 --max-attack-steps 40 --attack-max-remove-ratio 0.10 --eval-splits synthetic_test --attack-splits synthetic_test --out-dir result\candidate_damage_predictor_h3_synth_probe
+```
+
+结果：
+
+| Method | synthetic_test mean AUC, first 10% removal |
+| --- | ---: |
+| M5 dynamic edge betweenness | 0.066369 |
+| Candidate damage predictor, h=3 | 0.067866 |
+| M2 dynamic degree product | 0.070223 |
+| M4 dynamic community internal / pair | 0.070223 |
+| M7 dynamic community size / pair | 0.070223 |
+| M8 dynamic community bridge-degree | 0.070223 |
+
+候选排序质量：
+
+| Metric | Value |
+| --- | ---: |
+| states | 30 |
+| mean candidate count | 27.20 |
+| mean top1 hit | 0.533 |
+| mean chosen/best delta ratio | 0.589 |
+| mean Spearman | 0.099 |
+| mean Kendall | 0.098 |
+
+解释：
+
+- h=3 damage predictor 仍然优于 M2/M4/M7/M8。
+- 它接近 M5，但还没有超过 M5。
+- 与 one-step diverse probe 相比，h=3 标签更难学，候选排序质量下降。
+- 当前 h=3 训练规模很小，只有 4 个训练图、每图最多 15 个状态，因此还不能判断 h-step 方向失败。
+
+下一步建议：
+
+1. 先优化运行效率，避免 h-step 标签生成太慢。
+2. 增加训练状态数量，再比较 h=1 和 h=3。
+3. 尝试 pairwise/listwise ranking loss，因为 h-step damage 的绝对值更难回归。
+4. 如果 h=3 仍不提升，再考虑用 GNN 或 RL 学长期策略。
+
 一个最小 smoke test 已跑通：
 
 ```powershell
