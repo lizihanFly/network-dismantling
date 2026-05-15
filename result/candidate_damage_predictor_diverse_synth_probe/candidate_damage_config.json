@@ -1,0 +1,23 @@
+{
+  "top_k": 5,
+  "random_candidates": 8,
+  "bridge_top_k": 8,
+  "model_type": "gbdt",
+  "max_iter": 180,
+  "train_splits": "synthetic_train",
+  "eval_splits": "synthetic_test",
+  "attack_splits": "synthetic_test",
+  "graph_ids": "",
+  "max_train_graphs": 8,
+  "max_eval_graphs": 2,
+  "max_train_steps": 30,
+  "max_attack_steps": 60,
+  "train_max_remove_ratio": 0.15,
+  "attack_max_remove_ratio": 0.15,
+  "rollout_policy": "m5",
+  "skip_baselines": false,
+  "out_dir": "result\\candidate_damage_predictor_diverse_synth_probe",
+  "feature_count": 46,
+  "train_rows": 6219,
+  "eval_candidate_rows": 1732
+}

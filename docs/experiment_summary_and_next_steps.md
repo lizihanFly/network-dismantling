@@ -652,6 +652,74 @@ D:\ana\python.exe scripts\train_candidate_damage_predictor.py --top-k 5 --max-tr
 5. 再上 GNN edge scorer  
    等 damage target 显示出稳定信号后，用 GraphSAGE/GAT 学节点表示，再给候选边打分。
 
+### 8.7 已加入候选集多样性
+
+已经在 `scripts/train_candidate_damage_predictor.py` 中加入两个新参数：
+
+```powershell
+--random-candidates
+--bridge-top-k
+```
+
+含义：
+
+- `--random-candidates N`：每个动态状态额外随机采样 N 条当前 GCC 中的边。
+- `--bridge-top-k N`：每个动态状态额外加入 top-N bridge edges，按 degree product 排序。
+
+这样做的原因：
+
+- 只用 M2/M4/M5/M7/M8 top-k 时，模型永远选不到启发式方法没有提名的边。
+- random candidates 提供探索能力，让模型看到启发式以外的边。
+- bridge candidates 提供结构性补充，因为桥边删除可能直接造成连通分量断裂。
+- 这一步是在不直接扩大到全边动作空间的前提下，提高候选池上限。
+
+新增候选来源也会进入模型特征：
+
+- `source_random`
+- `source_bridge`
+
+也就是说，模型不仅能看到这些边，还知道它们是随机探索来的，还是桥边规则提名的。
+
+已跑一个 diversity smoke test，确认：
+
+- random/bridge 候选能进入 candidate set；
+- 新特征列能进入训练；
+- 模型训练和攻击评估链路正常。
+
+随后跑了一个带 baseline 的小规模 synthetic probe：
+
+```powershell
+D:\ana\python.exe scripts\train_candidate_damage_predictor.py --top-k 5 --random-candidates 8 --bridge-top-k 8 --max-train-graphs 8 --max-eval-graphs 2 --max-train-steps 30 --train-max-remove-ratio 0.15 --max-attack-steps 60 --attack-max-remove-ratio 0.15 --eval-splits synthetic_test --attack-splits synthetic_test --out-dir result\candidate_damage_predictor_diverse_synth_probe
+```
+
+结果：
+
+| Method | synthetic_test mean AUC, first 15% removal |
+| --- | ---: |
+| M5 dynamic edge betweenness | 0.096824 |
+| Candidate damage predictor, diverse candidates | 0.098510 |
+| M2 dynamic degree product | 0.104301 |
+| M4 dynamic community internal / pair | 0.104301 |
+| M7 dynamic community size / pair | 0.104301 |
+| M8 dynamic community bridge-degree | 0.104301 |
+
+候选排序质量：
+
+| Metric | Previous top-k only | Diverse candidates |
+| --- | ---: | ---: |
+| mean candidate count | 19.28 | 28.87 |
+| mean top1 hit | 0.950 | 1.000 |
+| mean chosen/best delta ratio | 0.625 | 1.000 |
+| mean Spearman | 0.037 | 0.458 |
+| mean Kendall | 0.033 | 0.445 |
+
+解释：
+
+- 加入 random/bridge candidates 后，候选排序质量明显变好。
+- 攻击 AUC 从 0.099799 改善到 0.098510，更接近 M5。
+- 但它仍然没有超过 M5，说明 one-step `gcc_delta` + GBDT 还不足以稳定打败 edge betweenness。
+- 下一步不应只继续加随机候选，而应转向多步目标 `h_step_gcc_drop` 或 ranking loss。
+
 一个最小 smoke test 已跑通：
 
 ```powershell

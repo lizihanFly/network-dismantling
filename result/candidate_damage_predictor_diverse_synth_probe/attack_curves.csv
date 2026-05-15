@@ -1,0 +1,595 @@
+﻿gcc_ratio,graph_id,graph_type,method,remove_ratio,removed_edges,split
+1.0,synthetic_test_000,sbm,Candidate damage predictor,0.0,0,synthetic_test
+1.0,synthetic_test_000,sbm,Candidate damage predictor,0.0009285051067780873,1,synthetic_test
+1.0,synthetic_test_000,sbm,Candidate damage predictor,0.0018570102135561746,2,synthetic_test
+1.0,synthetic_test_000,sbm,Candidate damage predictor,0.002785515320334262,3,synthetic_test
+1.0,synthetic_test_000,sbm,Candidate damage predictor,0.003714020427112349,4,synthetic_test
+1.0,synthetic_test_000,sbm,Candidate damage predictor,0.004642525533890436,5,synthetic_test
+1.0,synthetic_test_000,sbm,Candidate damage predictor,0.005571030640668524,6,synthetic_test
+1.0,synthetic_test_000,sbm,Candidate damage predictor,0.0064995357474466105,7,synthetic_test
+1.0,synthetic_test_000,sbm,Candidate damage predictor,0.007428040854224698,8,synthetic_test
+1.0,synthetic_test_000,sbm,Candidate damage predictor,0.008356545961002786,9,synthetic_test
+1.0,synthetic_test_000,sbm,Candidate damage predictor,0.009285051067780872,10,synthetic_test
+1.0,synthetic_test_000,sbm,Candidate damage predictor,0.01021355617455896,11,synthetic_test
+1.0,synthetic_test_000,sbm,Candidate damage predictor,0.011142061281337047,12,synthetic_test
+1.0,synthetic_test_000,sbm,Candidate damage predictor,0.012070566388115135,13,synthetic_test
+1.0,synthetic_test_000,sbm,Candidate damage predictor,0.012999071494893221,14,synthetic_test
+1.0,synthetic_test_000,sbm,Candidate damage predictor,0.013927576601671309,15,synthetic_test
+1.0,synthetic_test_000,sbm,Candidate damage predictor,0.014856081708449397,16,synthetic_test
+1.0,synthetic_test_000,sbm,Candidate damage predictor,0.015784586815227482,17,synthetic_test
+1.0,synthetic_test_000,sbm,Candidate damage predictor,0.016713091922005572,18,synthetic_test
+1.0,synthetic_test_000,sbm,Candidate damage predictor,0.017641597028783658,19,synthetic_test
+1.0,synthetic_test_000,sbm,Candidate damage predictor,0.018570102135561744,20,synthetic_test
+1.0,synthetic_test_000,sbm,Candidate damage predictor,0.019498607242339833,21,synthetic_test
+1.0,synthetic_test_000,sbm,Candidate damage predictor,0.02042711234911792,22,synthetic_test
+1.0,synthetic_test_000,sbm,Candidate damage predictor,0.02135561745589601,23,synthetic_test
+1.0,synthetic_test_000,sbm,Candidate damage predictor,0.022284122562674095,24,synthetic_test
+1.0,synthetic_test_000,sbm,Candidate damage predictor,0.02321262766945218,25,synthetic_test
+1.0,synthetic_test_000,sbm,Candidate damage predictor,0.02414113277623027,26,synthetic_test
+1.0,synthetic_test_000,sbm,Candidate damage predictor,0.025069637883008356,27,synthetic_test
+1.0,synthetic_test_000,sbm,Candidate damage predictor,0.025998142989786442,28,synthetic_test
+1.0,synthetic_test_000,sbm,Candidate damage predictor,0.02692664809656453,29,synthetic_test
+1.0,synthetic_test_000,sbm,Candidate damage predictor,0.027855153203342618,30,synthetic_test
+1.0,synthetic_test_000,sbm,Candidate damage predictor,0.028783658310120707,31,synthetic_test
+1.0,synthetic_test_000,sbm,Candidate damage predictor,0.029712163416898793,32,synthetic_test
+1.0,synthetic_test_000,sbm,Candidate damage predictor,0.03064066852367688,33,synthetic_test
+1.0,synthetic_test_000,sbm,Candidate damage predictor,0.031569173630454965,34,synthetic_test
+1.0,synthetic_test_000,sbm,Candidate damage predictor,0.032497678737233054,35,synthetic_test
+1.0,synthetic_test_000,sbm,Candidate damage predictor,0.033426183844011144,36,synthetic_test
+1.0,synthetic_test_000,sbm,Candidate damage predictor,0.034354688950789226,37,synthetic_test
+1.0,synthetic_test_000,sbm,Candidate damage predictor,0.035283194057567316,38,synthetic_test
+1.0,synthetic_test_000,sbm,Candidate damage predictor,0.036211699164345405,39,synthetic_test
+1.0,synthetic_test_000,sbm,Candidate damage predictor,0.03714020427112349,40,synthetic_test
+1.0,synthetic_test_000,sbm,Candidate damage predictor,0.03806870937790158,41,synthetic_test
+1.0,synthetic_test_000,sbm,Candidate damage predictor,0.03899721448467967,42,synthetic_test
+1.0,synthetic_test_000,sbm,Candidate damage predictor,0.039925719591457756,43,synthetic_test
+1.0,synthetic_test_000,sbm,Candidate damage predictor,0.04085422469823584,44,synthetic_test
+1.0,synthetic_test_000,sbm,Candidate damage predictor,0.04178272980501393,45,synthetic_test
+1.0,synthetic_test_000,sbm,Candidate damage predictor,0.04271123491179202,46,synthetic_test
+1.0,synthetic_test_000,sbm,Candidate damage predictor,0.0436397400185701,47,synthetic_test
+1.0,synthetic_test_000,sbm,Candidate damage predictor,0.04456824512534819,48,synthetic_test
+1.0,synthetic_test_000,sbm,Candidate damage predictor,0.04549675023212628,49,synthetic_test
+1.0,synthetic_test_000,sbm,Candidate damage predictor,0.04642525533890436,50,synthetic_test
+1.0,synthetic_test_000,sbm,Candidate damage predictor,0.04735376044568245,51,synthetic_test
+1.0,synthetic_test_000,sbm,Candidate damage predictor,0.04828226555246054,52,synthetic_test
+1.0,synthetic_test_000,sbm,Candidate damage predictor,0.04921077065923862,53,synthetic_test
+1.0,synthetic_test_000,sbm,Candidate damage predictor,0.05013927576601671,54,synthetic_test
+1.0,synthetic_test_000,sbm,Candidate damage predictor,0.0510677808727948,55,synthetic_test
+1.0,synthetic_test_000,sbm,Candidate damage predictor,0.051996285979572884,56,synthetic_test
+1.0,synthetic_test_000,sbm,Candidate damage predictor,0.052924791086350974,57,synthetic_test
+1.0,synthetic_test_000,sbm,Candidate damage predictor,0.05385329619312906,58,synthetic_test
+1.0,synthetic_test_000,sbm,Candidate damage predictor,0.05478180129990715,59,synthetic_test
+1.0,synthetic_test_000,sbm,Candidate damage predictor,0.055710306406685235,60,synthetic_test
+1.0,synthetic_test_000,sbm,M2 dynamic degree product,0.0,0,synthetic_test
+1.0,synthetic_test_000,sbm,M2 dynamic degree product,0.0009285051067780873,1,synthetic_test
+1.0,synthetic_test_000,sbm,M2 dynamic degree product,0.0018570102135561746,2,synthetic_test
+1.0,synthetic_test_000,sbm,M2 dynamic degree product,0.002785515320334262,3,synthetic_test
+1.0,synthetic_test_000,sbm,M2 dynamic degree product,0.003714020427112349,4,synthetic_test
+1.0,synthetic_test_000,sbm,M2 dynamic degree product,0.004642525533890436,5,synthetic_test
+1.0,synthetic_test_000,sbm,M2 dynamic degree product,0.005571030640668524,6,synthetic_test
+1.0,synthetic_test_000,sbm,M2 dynamic degree product,0.0064995357474466105,7,synthetic_test
+1.0,synthetic_test_000,sbm,M2 dynamic degree product,0.007428040854224698,8,synthetic_test
+1.0,synthetic_test_000,sbm,M2 dynamic degree product,0.008356545961002786,9,synthetic_test
+1.0,synthetic_test_000,sbm,M2 dynamic degree product,0.009285051067780872,10,synthetic_test
+1.0,synthetic_test_000,sbm,M2 dynamic degree product,0.01021355617455896,11,synthetic_test
+1.0,synthetic_test_000,sbm,M2 dynamic degree product,0.011142061281337047,12,synthetic_test
+1.0,synthetic_test_000,sbm,M2 dynamic degree product,0.012070566388115135,13,synthetic_test
+1.0,synthetic_test_000,sbm,M2 dynamic degree product,0.012999071494893221,14,synthetic_test
+1.0,synthetic_test_000,sbm,M2 dynamic degree product,0.013927576601671309,15,synthetic_test
+1.0,synthetic_test_000,sbm,M2 dynamic degree product,0.014856081708449397,16,synthetic_test
+1.0,synthetic_test_000,sbm,M2 dynamic degree product,0.015784586815227482,17,synthetic_test
+1.0,synthetic_test_000,sbm,M2 dynamic degree product,0.016713091922005572,18,synthetic_test
+1.0,synthetic_test_000,sbm,M2 dynamic degree product,0.017641597028783658,19,synthetic_test
+1.0,synthetic_test_000,sbm,M2 dynamic degree product,0.018570102135561744,20,synthetic_test
+1.0,synthetic_test_000,sbm,M2 dynamic degree product,0.019498607242339833,21,synthetic_test
+1.0,synthetic_test_000,sbm,M2 dynamic degree product,0.02042711234911792,22,synthetic_test
+1.0,synthetic_test_000,sbm,M2 dynamic degree product,0.02135561745589601,23,synthetic_test
+1.0,synthetic_test_000,sbm,M2 dynamic degree product,0.022284122562674095,24,synthetic_test
+1.0,synthetic_test_000,sbm,M2 dynamic degree product,0.02321262766945218,25,synthetic_test
+1.0,synthetic_test_000,sbm,M2 dynamic degree product,0.02414113277623027,26,synthetic_test
+1.0,synthetic_test_000,sbm,M2 dynamic degree product,0.025069637883008356,27,synthetic_test
+1.0,synthetic_test_000,sbm,M2 dynamic degree product,0.025998142989786442,28,synthetic_test
+1.0,synthetic_test_000,sbm,M2 dynamic degree product,0.02692664809656453,29,synthetic_test
+1.0,synthetic_test_000,sbm,M2 dynamic degree product,0.027855153203342618,30,synthetic_test
+1.0,synthetic_test_000,sbm,M2 dynamic degree product,0.028783658310120707,31,synthetic_test
+1.0,synthetic_test_000,sbm,M2 dynamic degree product,0.029712163416898793,32,synthetic_test
+1.0,synthetic_test_000,sbm,M2 dynamic degree product,0.03064066852367688,33,synthetic_test
+1.0,synthetic_test_000,sbm,M2 dynamic degree product,0.031569173630454965,34,synthetic_test
+1.0,synthetic_test_000,sbm,M2 dynamic degree product,0.032497678737233054,35,synthetic_test
+1.0,synthetic_test_000,sbm,M2 dynamic degree product,0.033426183844011144,36,synthetic_test
+1.0,synthetic_test_000,sbm,M2 dynamic degree product,0.034354688950789226,37,synthetic_test
+1.0,synthetic_test_000,sbm,M2 dynamic degree product,0.035283194057567316,38,synthetic_test
+1.0,synthetic_test_000,sbm,M2 dynamic degree product,0.036211699164345405,39,synthetic_test
+1.0,synthetic_test_000,sbm,M2 dynamic degree product,0.03714020427112349,40,synthetic_test
+1.0,synthetic_test_000,sbm,M2 dynamic degree product,0.03806870937790158,41,synthetic_test
+1.0,synthetic_test_000,sbm,M2 dynamic degree product,0.03899721448467967,42,synthetic_test
+1.0,synthetic_test_000,sbm,M2 dynamic degree product,0.039925719591457756,43,synthetic_test
+1.0,synthetic_test_000,sbm,M2 dynamic degree product,0.04085422469823584,44,synthetic_test
+1.0,synthetic_test_000,sbm,M2 dynamic degree product,0.04178272980501393,45,synthetic_test
+1.0,synthetic_test_000,sbm,M2 dynamic degree product,0.04271123491179202,46,synthetic_test
+1.0,synthetic_test_000,sbm,M2 dynamic degree product,0.0436397400185701,47,synthetic_test
+1.0,synthetic_test_000,sbm,M2 dynamic degree product,0.04456824512534819,48,synthetic_test
+1.0,synthetic_test_000,sbm,M2 dynamic degree product,0.04549675023212628,49,synthetic_test
+1.0,synthetic_test_000,sbm,M2 dynamic degree product,0.04642525533890436,50,synthetic_test
+1.0,synthetic_test_000,sbm,M2 dynamic degree product,0.04735376044568245,51,synthetic_test
+1.0,synthetic_test_000,sbm,M2 dynamic degree product,0.04828226555246054,52,synthetic_test
+1.0,synthetic_test_000,sbm,M2 dynamic degree product,0.04921077065923862,53,synthetic_test
+1.0,synthetic_test_000,sbm,M2 dynamic degree product,0.05013927576601671,54,synthetic_test
+1.0,synthetic_test_000,sbm,M2 dynamic degree product,0.0510677808727948,55,synthetic_test
+1.0,synthetic_test_000,sbm,M2 dynamic degree product,0.051996285979572884,56,synthetic_test
+1.0,synthetic_test_000,sbm,M2 dynamic degree product,0.052924791086350974,57,synthetic_test
+1.0,synthetic_test_000,sbm,M2 dynamic degree product,0.05385329619312906,58,synthetic_test
+1.0,synthetic_test_000,sbm,M2 dynamic degree product,0.05478180129990715,59,synthetic_test
+1.0,synthetic_test_000,sbm,M2 dynamic degree product,0.055710306406685235,60,synthetic_test
+1.0,synthetic_test_000,sbm,M4 dynamic community internal / pair,0.0,0,synthetic_test
+1.0,synthetic_test_000,sbm,M4 dynamic community internal / pair,0.0009285051067780873,1,synthetic_test
+1.0,synthetic_test_000,sbm,M4 dynamic community internal / pair,0.0018570102135561746,2,synthetic_test
+1.0,synthetic_test_000,sbm,M4 dynamic community internal / pair,0.002785515320334262,3,synthetic_test
+1.0,synthetic_test_000,sbm,M4 dynamic community internal / pair,0.003714020427112349,4,synthetic_test
+1.0,synthetic_test_000,sbm,M4 dynamic community internal / pair,0.004642525533890436,5,synthetic_test
+1.0,synthetic_test_000,sbm,M4 dynamic community internal / pair,0.005571030640668524,6,synthetic_test
+1.0,synthetic_test_000,sbm,M4 dynamic community internal / pair,0.0064995357474466105,7,synthetic_test
+1.0,synthetic_test_000,sbm,M4 dynamic community internal / pair,0.007428040854224698,8,synthetic_test
+1.0,synthetic_test_000,sbm,M4 dynamic community internal / pair,0.008356545961002786,9,synthetic_test
+1.0,synthetic_test_000,sbm,M4 dynamic community internal / pair,0.009285051067780872,10,synthetic_test
+1.0,synthetic_test_000,sbm,M4 dynamic community internal / pair,0.01021355617455896,11,synthetic_test
+1.0,synthetic_test_000,sbm,M4 dynamic community internal / pair,0.011142061281337047,12,synthetic_test
+1.0,synthetic_test_000,sbm,M4 dynamic community internal / pair,0.012070566388115135,13,synthetic_test
+1.0,synthetic_test_000,sbm,M4 dynamic community internal / pair,0.012999071494893221,14,synthetic_test
+1.0,synthetic_test_000,sbm,M4 dynamic community internal / pair,0.013927576601671309,15,synthetic_test
+1.0,synthetic_test_000,sbm,M4 dynamic community internal / pair,0.014856081708449397,16,synthetic_test
+1.0,synthetic_test_000,sbm,M4 dynamic community internal / pair,0.015784586815227482,17,synthetic_test
+1.0,synthetic_test_000,sbm,M4 dynamic community internal / pair,0.016713091922005572,18,synthetic_test
+1.0,synthetic_test_000,sbm,M4 dynamic community internal / pair,0.017641597028783658,19,synthetic_test
+1.0,synthetic_test_000,sbm,M4 dynamic community internal / pair,0.018570102135561744,20,synthetic_test
+1.0,synthetic_test_000,sbm,M4 dynamic community internal / pair,0.019498607242339833,21,synthetic_test
+1.0,synthetic_test_000,sbm,M4 dynamic community internal / pair,0.02042711234911792,22,synthetic_test
+1.0,synthetic_test_000,sbm,M4 dynamic community internal / pair,0.02135561745589601,23,synthetic_test
+1.0,synthetic_test_000,sbm,M4 dynamic community internal / pair,0.022284122562674095,24,synthetic_test
+1.0,synthetic_test_000,sbm,M4 dynamic community internal / pair,0.02321262766945218,25,synthetic_test
+1.0,synthetic_test_000,sbm,M4 dynamic community internal / pair,0.02414113277623027,26,synthetic_test
+1.0,synthetic_test_000,sbm,M4 dynamic community internal / pair,0.025069637883008356,27,synthetic_test
+1.0,synthetic_test_000,sbm,M4 dynamic community internal / pair,0.025998142989786442,28,synthetic_test
+1.0,synthetic_test_000,sbm,M4 dynamic community internal / pair,0.02692664809656453,29,synthetic_test
+1.0,synthetic_test_000,sbm,M4 dynamic community internal / pair,0.027855153203342618,30,synthetic_test
+1.0,synthetic_test_000,sbm,M4 dynamic community internal / pair,0.028783658310120707,31,synthetic_test
+1.0,synthetic_test_000,sbm,M4 dynamic community internal / pair,0.029712163416898793,32,synthetic_test
+1.0,synthetic_test_000,sbm,M4 dynamic community internal / pair,0.03064066852367688,33,synthetic_test
+1.0,synthetic_test_000,sbm,M4 dynamic community internal / pair,0.031569173630454965,34,synthetic_test
+1.0,synthetic_test_000,sbm,M4 dynamic community internal / pair,0.032497678737233054,35,synthetic_test
+1.0,synthetic_test_000,sbm,M4 dynamic community internal / pair,0.033426183844011144,36,synthetic_test
+1.0,synthetic_test_000,sbm,M4 dynamic community internal / pair,0.034354688950789226,37,synthetic_test
+1.0,synthetic_test_000,sbm,M4 dynamic community internal / pair,0.035283194057567316,38,synthetic_test
+1.0,synthetic_test_000,sbm,M4 dynamic community internal / pair,0.036211699164345405,39,synthetic_test
+1.0,synthetic_test_000,sbm,M4 dynamic community internal / pair,0.03714020427112349,40,synthetic_test
+1.0,synthetic_test_000,sbm,M4 dynamic community internal / pair,0.03806870937790158,41,synthetic_test
+1.0,synthetic_test_000,sbm,M4 dynamic community internal / pair,0.03899721448467967,42,synthetic_test
+1.0,synthetic_test_000,sbm,M4 dynamic community internal / pair,0.039925719591457756,43,synthetic_test
+1.0,synthetic_test_000,sbm,M4 dynamic community internal / pair,0.04085422469823584,44,synthetic_test
+1.0,synthetic_test_000,sbm,M4 dynamic community internal / pair,0.04178272980501393,45,synthetic_test
+1.0,synthetic_test_000,sbm,M4 dynamic community internal / pair,0.04271123491179202,46,synthetic_test
+1.0,synthetic_test_000,sbm,M4 dynamic community internal / pair,0.0436397400185701,47,synthetic_test
+1.0,synthetic_test_000,sbm,M4 dynamic community internal / pair,0.04456824512534819,48,synthetic_test
+1.0,synthetic_test_000,sbm,M4 dynamic community internal / pair,0.04549675023212628,49,synthetic_test
+1.0,synthetic_test_000,sbm,M4 dynamic community internal / pair,0.04642525533890436,50,synthetic_test
+1.0,synthetic_test_000,sbm,M4 dynamic community internal / pair,0.04735376044568245,51,synthetic_test
+1.0,synthetic_test_000,sbm,M4 dynamic community internal / pair,0.04828226555246054,52,synthetic_test
+1.0,synthetic_test_000,sbm,M4 dynamic community internal / pair,0.04921077065923862,53,synthetic_test
+1.0,synthetic_test_000,sbm,M4 dynamic community internal / pair,0.05013927576601671,54,synthetic_test
+1.0,synthetic_test_000,sbm,M4 dynamic community internal / pair,0.0510677808727948,55,synthetic_test
+1.0,synthetic_test_000,sbm,M4 dynamic community internal / pair,0.051996285979572884,56,synthetic_test
+1.0,synthetic_test_000,sbm,M4 dynamic community internal / pair,0.052924791086350974,57,synthetic_test
+1.0,synthetic_test_000,sbm,M4 dynamic community internal / pair,0.05385329619312906,58,synthetic_test
+1.0,synthetic_test_000,sbm,M4 dynamic community internal / pair,0.05478180129990715,59,synthetic_test
+1.0,synthetic_test_000,sbm,M4 dynamic community internal / pair,0.055710306406685235,60,synthetic_test
+1.0,synthetic_test_000,sbm,M5 dynamic edge betweenness,0.0,0,synthetic_test
+1.0,synthetic_test_000,sbm,M5 dynamic edge betweenness,0.0009285051067780873,1,synthetic_test
+1.0,synthetic_test_000,sbm,M5 dynamic edge betweenness,0.0018570102135561746,2,synthetic_test
+0.9948979591836735,synthetic_test_000,sbm,M5 dynamic edge betweenness,0.002785515320334262,3,synthetic_test
+0.9948979591836735,synthetic_test_000,sbm,M5 dynamic edge betweenness,0.003714020427112349,4,synthetic_test
+0.9948979591836735,synthetic_test_000,sbm,M5 dynamic edge betweenness,0.004642525533890436,5,synthetic_test
+0.9897959183673469,synthetic_test_000,sbm,M5 dynamic edge betweenness,0.005571030640668524,6,synthetic_test
+0.9897959183673469,synthetic_test_000,sbm,M5 dynamic edge betweenness,0.0064995357474466105,7,synthetic_test
+0.9897959183673469,synthetic_test_000,sbm,M5 dynamic edge betweenness,0.007428040854224698,8,synthetic_test
+0.9897959183673469,synthetic_test_000,sbm,M5 dynamic edge betweenness,0.008356545961002786,9,synthetic_test
+0.9897959183673469,synthetic_test_000,sbm,M5 dynamic edge betweenness,0.009285051067780872,10,synthetic_test
+0.9897959183673469,synthetic_test_000,sbm,M5 dynamic edge betweenness,0.01021355617455896,11,synthetic_test
+0.9897959183673469,synthetic_test_000,sbm,M5 dynamic edge betweenness,0.011142061281337047,12,synthetic_test
+0.9897959183673469,synthetic_test_000,sbm,M5 dynamic edge betweenness,0.012070566388115135,13,synthetic_test
+0.9897959183673469,synthetic_test_000,sbm,M5 dynamic edge betweenness,0.012999071494893221,14,synthetic_test
+0.9897959183673469,synthetic_test_000,sbm,M5 dynamic edge betweenness,0.013927576601671309,15,synthetic_test
+0.9897959183673469,synthetic_test_000,sbm,M5 dynamic edge betweenness,0.014856081708449397,16,synthetic_test
+0.9897959183673469,synthetic_test_000,sbm,M5 dynamic edge betweenness,0.015784586815227482,17,synthetic_test
+0.9897959183673469,synthetic_test_000,sbm,M5 dynamic edge betweenness,0.016713091922005572,18,synthetic_test
+0.9897959183673469,synthetic_test_000,sbm,M5 dynamic edge betweenness,0.017641597028783658,19,synthetic_test
+0.9897959183673469,synthetic_test_000,sbm,M5 dynamic edge betweenness,0.018570102135561744,20,synthetic_test
+0.9897959183673469,synthetic_test_000,sbm,M5 dynamic edge betweenness,0.019498607242339833,21,synthetic_test
+0.9897959183673469,synthetic_test_000,sbm,M5 dynamic edge betweenness,0.02042711234911792,22,synthetic_test
+0.9897959183673469,synthetic_test_000,sbm,M5 dynamic edge betweenness,0.02135561745589601,23,synthetic_test
+0.9897959183673469,synthetic_test_000,sbm,M5 dynamic edge betweenness,0.022284122562674095,24,synthetic_test
+0.9897959183673469,synthetic_test_000,sbm,M5 dynamic edge betweenness,0.02321262766945218,25,synthetic_test
+0.9897959183673469,synthetic_test_000,sbm,M5 dynamic edge betweenness,0.02414113277623027,26,synthetic_test
+0.9897959183673469,synthetic_test_000,sbm,M5 dynamic edge betweenness,0.025069637883008356,27,synthetic_test
+0.9897959183673469,synthetic_test_000,sbm,M5 dynamic edge betweenness,0.025998142989786442,28,synthetic_test
+0.9897959183673469,synthetic_test_000,sbm,M5 dynamic edge betweenness,0.02692664809656453,29,synthetic_test
+0.9897959183673469,synthetic_test_000,sbm,M5 dynamic edge betweenness,0.027855153203342618,30,synthetic_test
+0.9897959183673469,synthetic_test_000,sbm,M5 dynamic edge betweenness,0.028783658310120707,31,synthetic_test
+0.9897959183673469,synthetic_test_000,sbm,M5 dynamic edge betweenness,0.029712163416898793,32,synthetic_test
+0.9897959183673469,synthetic_test_000,sbm,M5 dynamic edge betweenness,0.03064066852367688,33,synthetic_test
+0.9897959183673469,synthetic_test_000,sbm,M5 dynamic edge betweenness,0.031569173630454965,34,synthetic_test
+0.9897959183673469,synthetic_test_000,sbm,M5 dynamic edge betweenness,0.032497678737233054,35,synthetic_test
+0.9897959183673469,synthetic_test_000,sbm,M5 dynamic edge betweenness,0.033426183844011144,36,synthetic_test
+0.9846938775510204,synthetic_test_000,sbm,M5 dynamic edge betweenness,0.034354688950789226,37,synthetic_test
+0.9846938775510204,synthetic_test_000,sbm,M5 dynamic edge betweenness,0.035283194057567316,38,synthetic_test
+0.9846938775510204,synthetic_test_000,sbm,M5 dynamic edge betweenness,0.036211699164345405,39,synthetic_test
+0.9846938775510204,synthetic_test_000,sbm,M5 dynamic edge betweenness,0.03714020427112349,40,synthetic_test
+0.9846938775510204,synthetic_test_000,sbm,M5 dynamic edge betweenness,0.03806870937790158,41,synthetic_test
+0.9846938775510204,synthetic_test_000,sbm,M5 dynamic edge betweenness,0.03899721448467967,42,synthetic_test
+0.9846938775510204,synthetic_test_000,sbm,M5 dynamic edge betweenness,0.039925719591457756,43,synthetic_test
+0.9846938775510204,synthetic_test_000,sbm,M5 dynamic edge betweenness,0.04085422469823584,44,synthetic_test
+0.9846938775510204,synthetic_test_000,sbm,M5 dynamic edge betweenness,0.04178272980501393,45,synthetic_test
+0.9846938775510204,synthetic_test_000,sbm,M5 dynamic edge betweenness,0.04271123491179202,46,synthetic_test
+0.9846938775510204,synthetic_test_000,sbm,M5 dynamic edge betweenness,0.0436397400185701,47,synthetic_test
+0.9846938775510204,synthetic_test_000,sbm,M5 dynamic edge betweenness,0.04456824512534819,48,synthetic_test
+0.9846938775510204,synthetic_test_000,sbm,M5 dynamic edge betweenness,0.04549675023212628,49,synthetic_test
+0.9846938775510204,synthetic_test_000,sbm,M5 dynamic edge betweenness,0.04642525533890436,50,synthetic_test
+0.9846938775510204,synthetic_test_000,sbm,M5 dynamic edge betweenness,0.04735376044568245,51,synthetic_test
+0.9846938775510204,synthetic_test_000,sbm,M5 dynamic edge betweenness,0.04828226555246054,52,synthetic_test
+0.9846938775510204,synthetic_test_000,sbm,M5 dynamic edge betweenness,0.04921077065923862,53,synthetic_test
+0.9846938775510204,synthetic_test_000,sbm,M5 dynamic edge betweenness,0.05013927576601671,54,synthetic_test
+0.9846938775510204,synthetic_test_000,sbm,M5 dynamic edge betweenness,0.0510677808727948,55,synthetic_test
+0.9846938775510204,synthetic_test_000,sbm,M5 dynamic edge betweenness,0.051996285979572884,56,synthetic_test
+0.9846938775510204,synthetic_test_000,sbm,M5 dynamic edge betweenness,0.052924791086350974,57,synthetic_test
+0.9846938775510204,synthetic_test_000,sbm,M5 dynamic edge betweenness,0.05385329619312906,58,synthetic_test
+0.9642857142857143,synthetic_test_000,sbm,M5 dynamic edge betweenness,0.05478180129990715,59,synthetic_test
+0.9642857142857143,synthetic_test_000,sbm,M5 dynamic edge betweenness,0.055710306406685235,60,synthetic_test
+1.0,synthetic_test_000,sbm,M7 dynamic community size / pair,0.0,0,synthetic_test
+1.0,synthetic_test_000,sbm,M7 dynamic community size / pair,0.0009285051067780873,1,synthetic_test
+1.0,synthetic_test_000,sbm,M7 dynamic community size / pair,0.0018570102135561746,2,synthetic_test
+1.0,synthetic_test_000,sbm,M7 dynamic community size / pair,0.002785515320334262,3,synthetic_test
+1.0,synthetic_test_000,sbm,M7 dynamic community size / pair,0.003714020427112349,4,synthetic_test
+1.0,synthetic_test_000,sbm,M7 dynamic community size / pair,0.004642525533890436,5,synthetic_test
+1.0,synthetic_test_000,sbm,M7 dynamic community size / pair,0.005571030640668524,6,synthetic_test
+1.0,synthetic_test_000,sbm,M7 dynamic community size / pair,0.0064995357474466105,7,synthetic_test
+1.0,synthetic_test_000,sbm,M7 dynamic community size / pair,0.007428040854224698,8,synthetic_test
+1.0,synthetic_test_000,sbm,M7 dynamic community size / pair,0.008356545961002786,9,synthetic_test
+1.0,synthetic_test_000,sbm,M7 dynamic community size / pair,0.009285051067780872,10,synthetic_test
+1.0,synthetic_test_000,sbm,M7 dynamic community size / pair,0.01021355617455896,11,synthetic_test
+1.0,synthetic_test_000,sbm,M7 dynamic community size / pair,0.011142061281337047,12,synthetic_test
+1.0,synthetic_test_000,sbm,M7 dynamic community size / pair,0.012070566388115135,13,synthetic_test
+1.0,synthetic_test_000,sbm,M7 dynamic community size / pair,0.012999071494893221,14,synthetic_test
+1.0,synthetic_test_000,sbm,M7 dynamic community size / pair,0.013927576601671309,15,synthetic_test
+1.0,synthetic_test_000,sbm,M7 dynamic community size / pair,0.014856081708449397,16,synthetic_test
+1.0,synthetic_test_000,sbm,M7 dynamic community size / pair,0.015784586815227482,17,synthetic_test
+1.0,synthetic_test_000,sbm,M7 dynamic community size / pair,0.016713091922005572,18,synthetic_test
+1.0,synthetic_test_000,sbm,M7 dynamic community size / pair,0.017641597028783658,19,synthetic_test
+1.0,synthetic_test_000,sbm,M7 dynamic community size / pair,0.018570102135561744,20,synthetic_test
+1.0,synthetic_test_000,sbm,M7 dynamic community size / pair,0.019498607242339833,21,synthetic_test
+1.0,synthetic_test_000,sbm,M7 dynamic community size / pair,0.02042711234911792,22,synthetic_test
+1.0,synthetic_test_000,sbm,M7 dynamic community size / pair,0.02135561745589601,23,synthetic_test
+1.0,synthetic_test_000,sbm,M7 dynamic community size / pair,0.022284122562674095,24,synthetic_test
+1.0,synthetic_test_000,sbm,M7 dynamic community size / pair,0.02321262766945218,25,synthetic_test
+1.0,synthetic_test_000,sbm,M7 dynamic community size / pair,0.02414113277623027,26,synthetic_test
+1.0,synthetic_test_000,sbm,M7 dynamic community size / pair,0.025069637883008356,27,synthetic_test
+1.0,synthetic_test_000,sbm,M7 dynamic community size / pair,0.025998142989786442,28,synthetic_test
+1.0,synthetic_test_000,sbm,M7 dynamic community size / pair,0.02692664809656453,29,synthetic_test
+1.0,synthetic_test_000,sbm,M7 dynamic community size / pair,0.027855153203342618,30,synthetic_test
+1.0,synthetic_test_000,sbm,M7 dynamic community size / pair,0.028783658310120707,31,synthetic_test
+1.0,synthetic_test_000,sbm,M7 dynamic community size / pair,0.029712163416898793,32,synthetic_test
+1.0,synthetic_test_000,sbm,M7 dynamic community size / pair,0.03064066852367688,33,synthetic_test
+1.0,synthetic_test_000,sbm,M7 dynamic community size / pair,0.031569173630454965,34,synthetic_test
+1.0,synthetic_test_000,sbm,M7 dynamic community size / pair,0.032497678737233054,35,synthetic_test
+1.0,synthetic_test_000,sbm,M7 dynamic community size / pair,0.033426183844011144,36,synthetic_test
+1.0,synthetic_test_000,sbm,M7 dynamic community size / pair,0.034354688950789226,37,synthetic_test
+1.0,synthetic_test_000,sbm,M7 dynamic community size / pair,0.035283194057567316,38,synthetic_test
+1.0,synthetic_test_000,sbm,M7 dynamic community size / pair,0.036211699164345405,39,synthetic_test
+1.0,synthetic_test_000,sbm,M7 dynamic community size / pair,0.03714020427112349,40,synthetic_test
+1.0,synthetic_test_000,sbm,M7 dynamic community size / pair,0.03806870937790158,41,synthetic_test
+1.0,synthetic_test_000,sbm,M7 dynamic community size / pair,0.03899721448467967,42,synthetic_test
+1.0,synthetic_test_000,sbm,M7 dynamic community size / pair,0.039925719591457756,43,synthetic_test
+1.0,synthetic_test_000,sbm,M7 dynamic community size / pair,0.04085422469823584,44,synthetic_test
+1.0,synthetic_test_000,sbm,M7 dynamic community size / pair,0.04178272980501393,45,synthetic_test
+1.0,synthetic_test_000,sbm,M7 dynamic community size / pair,0.04271123491179202,46,synthetic_test
+1.0,synthetic_test_000,sbm,M7 dynamic community size / pair,0.0436397400185701,47,synthetic_test
+1.0,synthetic_test_000,sbm,M7 dynamic community size / pair,0.04456824512534819,48,synthetic_test
+1.0,synthetic_test_000,sbm,M7 dynamic community size / pair,0.04549675023212628,49,synthetic_test
+1.0,synthetic_test_000,sbm,M7 dynamic community size / pair,0.04642525533890436,50,synthetic_test
+1.0,synthetic_test_000,sbm,M7 dynamic community size / pair,0.04735376044568245,51,synthetic_test
+1.0,synthetic_test_000,sbm,M7 dynamic community size / pair,0.04828226555246054,52,synthetic_test
+1.0,synthetic_test_000,sbm,M7 dynamic community size / pair,0.04921077065923862,53,synthetic_test
+1.0,synthetic_test_000,sbm,M7 dynamic community size / pair,0.05013927576601671,54,synthetic_test
+1.0,synthetic_test_000,sbm,M7 dynamic community size / pair,0.0510677808727948,55,synthetic_test
+1.0,synthetic_test_000,sbm,M7 dynamic community size / pair,0.051996285979572884,56,synthetic_test
+1.0,synthetic_test_000,sbm,M7 dynamic community size / pair,0.052924791086350974,57,synthetic_test
+1.0,synthetic_test_000,sbm,M7 dynamic community size / pair,0.05385329619312906,58,synthetic_test
+1.0,synthetic_test_000,sbm,M7 dynamic community size / pair,0.05478180129990715,59,synthetic_test
+1.0,synthetic_test_000,sbm,M7 dynamic community size / pair,0.055710306406685235,60,synthetic_test
+1.0,synthetic_test_000,sbm,M8 dynamic community bridge-degree,0.0,0,synthetic_test
+1.0,synthetic_test_000,sbm,M8 dynamic community bridge-degree,0.0009285051067780873,1,synthetic_test
+1.0,synthetic_test_000,sbm,M8 dynamic community bridge-degree,0.0018570102135561746,2,synthetic_test
+1.0,synthetic_test_000,sbm,M8 dynamic community bridge-degree,0.002785515320334262,3,synthetic_test
+1.0,synthetic_test_000,sbm,M8 dynamic community bridge-degree,0.003714020427112349,4,synthetic_test
+1.0,synthetic_test_000,sbm,M8 dynamic community bridge-degree,0.004642525533890436,5,synthetic_test
+1.0,synthetic_test_000,sbm,M8 dynamic community bridge-degree,0.005571030640668524,6,synthetic_test
+1.0,synthetic_test_000,sbm,M8 dynamic community bridge-degree,0.0064995357474466105,7,synthetic_test
+1.0,synthetic_test_000,sbm,M8 dynamic community bridge-degree,0.007428040854224698,8,synthetic_test
+1.0,synthetic_test_000,sbm,M8 dynamic community bridge-degree,0.008356545961002786,9,synthetic_test
+1.0,synthetic_test_000,sbm,M8 dynamic community bridge-degree,0.009285051067780872,10,synthetic_test
+1.0,synthetic_test_000,sbm,M8 dynamic community bridge-degree,0.01021355617455896,11,synthetic_test
+1.0,synthetic_test_000,sbm,M8 dynamic community bridge-degree,0.011142061281337047,12,synthetic_test
+1.0,synthetic_test_000,sbm,M8 dynamic community bridge-degree,0.012070566388115135,13,synthetic_test
+1.0,synthetic_test_000,sbm,M8 dynamic community bridge-degree,0.012999071494893221,14,synthetic_test
+1.0,synthetic_test_000,sbm,M8 dynamic community bridge-degree,0.013927576601671309,15,synthetic_test
+1.0,synthetic_test_000,sbm,M8 dynamic community bridge-degree,0.014856081708449397,16,synthetic_test
+1.0,synthetic_test_000,sbm,M8 dynamic community bridge-degree,0.015784586815227482,17,synthetic_test
+1.0,synthetic_test_000,sbm,M8 dynamic community bridge-degree,0.016713091922005572,18,synthetic_test
+1.0,synthetic_test_000,sbm,M8 dynamic community bridge-degree,0.017641597028783658,19,synthetic_test
+1.0,synthetic_test_000,sbm,M8 dynamic community bridge-degree,0.018570102135561744,20,synthetic_test
+1.0,synthetic_test_000,sbm,M8 dynamic community bridge-degree,0.019498607242339833,21,synthetic_test
+1.0,synthetic_test_000,sbm,M8 dynamic community bridge-degree,0.02042711234911792,22,synthetic_test
+1.0,synthetic_test_000,sbm,M8 dynamic community bridge-degree,0.02135561745589601,23,synthetic_test
+1.0,synthetic_test_000,sbm,M8 dynamic community bridge-degree,0.022284122562674095,24,synthetic_test
+1.0,synthetic_test_000,sbm,M8 dynamic community bridge-degree,0.02321262766945218,25,synthetic_test
+1.0,synthetic_test_000,sbm,M8 dynamic community bridge-degree,0.02414113277623027,26,synthetic_test
+1.0,synthetic_test_000,sbm,M8 dynamic community bridge-degree,0.025069637883008356,27,synthetic_test
+1.0,synthetic_test_000,sbm,M8 dynamic community bridge-degree,0.025998142989786442,28,synthetic_test
+1.0,synthetic_test_000,sbm,M8 dynamic community bridge-degree,0.02692664809656453,29,synthetic_test
+1.0,synthetic_test_000,sbm,M8 dynamic community bridge-degree,0.027855153203342618,30,synthetic_test
+1.0,synthetic_test_000,sbm,M8 dynamic community bridge-degree,0.028783658310120707,31,synthetic_test
+1.0,synthetic_test_000,sbm,M8 dynamic community bridge-degree,0.029712163416898793,32,synthetic_test
+1.0,synthetic_test_000,sbm,M8 dynamic community bridge-degree,0.03064066852367688,33,synthetic_test
+1.0,synthetic_test_000,sbm,M8 dynamic community bridge-degree,0.031569173630454965,34,synthetic_test
+1.0,synthetic_test_000,sbm,M8 dynamic community bridge-degree,0.032497678737233054,35,synthetic_test
+1.0,synthetic_test_000,sbm,M8 dynamic community bridge-degree,0.033426183844011144,36,synthetic_test
+1.0,synthetic_test_000,sbm,M8 dynamic community bridge-degree,0.034354688950789226,37,synthetic_test
+1.0,synthetic_test_000,sbm,M8 dynamic community bridge-degree,0.035283194057567316,38,synthetic_test
+1.0,synthetic_test_000,sbm,M8 dynamic community bridge-degree,0.036211699164345405,39,synthetic_test
+1.0,synthetic_test_000,sbm,M8 dynamic community bridge-degree,0.03714020427112349,40,synthetic_test
+1.0,synthetic_test_000,sbm,M8 dynamic community bridge-degree,0.03806870937790158,41,synthetic_test
+1.0,synthetic_test_000,sbm,M8 dynamic community bridge-degree,0.03899721448467967,42,synthetic_test
+1.0,synthetic_test_000,sbm,M8 dynamic community bridge-degree,0.039925719591457756,43,synthetic_test
+1.0,synthetic_test_000,sbm,M8 dynamic community bridge-degree,0.04085422469823584,44,synthetic_test
+1.0,synthetic_test_000,sbm,M8 dynamic community bridge-degree,0.04178272980501393,45,synthetic_test
+1.0,synthetic_test_000,sbm,M8 dynamic community bridge-degree,0.04271123491179202,46,synthetic_test
+1.0,synthetic_test_000,sbm,M8 dynamic community bridge-degree,0.0436397400185701,47,synthetic_test
+1.0,synthetic_test_000,sbm,M8 dynamic community bridge-degree,0.04456824512534819,48,synthetic_test
+1.0,synthetic_test_000,sbm,M8 dynamic community bridge-degree,0.04549675023212628,49,synthetic_test
+1.0,synthetic_test_000,sbm,M8 dynamic community bridge-degree,0.04642525533890436,50,synthetic_test
+1.0,synthetic_test_000,sbm,M8 dynamic community bridge-degree,0.04735376044568245,51,synthetic_test
+1.0,synthetic_test_000,sbm,M8 dynamic community bridge-degree,0.04828226555246054,52,synthetic_test
+1.0,synthetic_test_000,sbm,M8 dynamic community bridge-degree,0.04921077065923862,53,synthetic_test
+1.0,synthetic_test_000,sbm,M8 dynamic community bridge-degree,0.05013927576601671,54,synthetic_test
+1.0,synthetic_test_000,sbm,M8 dynamic community bridge-degree,0.0510677808727948,55,synthetic_test
+1.0,synthetic_test_000,sbm,M8 dynamic community bridge-degree,0.051996285979572884,56,synthetic_test
+1.0,synthetic_test_000,sbm,M8 dynamic community bridge-degree,0.052924791086350974,57,synthetic_test
+1.0,synthetic_test_000,sbm,M8 dynamic community bridge-degree,0.05385329619312906,58,synthetic_test
+1.0,synthetic_test_000,sbm,M8 dynamic community bridge-degree,0.05478180129990715,59,synthetic_test
+1.0,synthetic_test_000,sbm,M8 dynamic community bridge-degree,0.055710306406685235,60,synthetic_test
+1.0,synthetic_test_001,sbm,Candidate damage predictor,0.0,0,synthetic_test
+0.9903846153846154,synthetic_test_001,sbm,Candidate damage predictor,0.004132231404958678,1,synthetic_test
+0.9807692307692307,synthetic_test_001,sbm,Candidate damage predictor,0.008264462809917356,2,synthetic_test
+0.9711538461538461,synthetic_test_001,sbm,Candidate damage predictor,0.012396694214876033,3,synthetic_test
+0.9615384615384616,synthetic_test_001,sbm,Candidate damage predictor,0.01652892561983471,4,synthetic_test
+0.9519230769230769,synthetic_test_001,sbm,Candidate damage predictor,0.02066115702479339,5,synthetic_test
+0.9423076923076923,synthetic_test_001,sbm,Candidate damage predictor,0.024793388429752067,6,synthetic_test
+0.9326923076923077,synthetic_test_001,sbm,Candidate damage predictor,0.028925619834710745,7,synthetic_test
+0.9326923076923077,synthetic_test_001,sbm,Candidate damage predictor,0.03305785123966942,8,synthetic_test
+0.9326923076923077,synthetic_test_001,sbm,Candidate damage predictor,0.0371900826446281,9,synthetic_test
+0.9326923076923077,synthetic_test_001,sbm,Candidate damage predictor,0.04132231404958678,10,synthetic_test
+0.9326923076923077,synthetic_test_001,sbm,Candidate damage predictor,0.045454545454545456,11,synthetic_test
+0.9326923076923077,synthetic_test_001,sbm,Candidate damage predictor,0.049586776859504134,12,synthetic_test
+0.9326923076923077,synthetic_test_001,sbm,Candidate damage predictor,0.05371900826446281,13,synthetic_test
+0.9326923076923077,synthetic_test_001,sbm,Candidate damage predictor,0.05785123966942149,14,synthetic_test
+0.9326923076923077,synthetic_test_001,sbm,Candidate damage predictor,0.06198347107438017,15,synthetic_test
+0.9230769230769231,synthetic_test_001,sbm,Candidate damage predictor,0.06611570247933884,16,synthetic_test
+0.9230769230769231,synthetic_test_001,sbm,Candidate damage predictor,0.07024793388429752,17,synthetic_test
+0.9230769230769231,synthetic_test_001,sbm,Candidate damage predictor,0.0743801652892562,18,synthetic_test
+0.9134615384615384,synthetic_test_001,sbm,Candidate damage predictor,0.07851239669421488,19,synthetic_test
+0.9134615384615384,synthetic_test_001,sbm,Candidate damage predictor,0.08264462809917356,20,synthetic_test
+0.9134615384615384,synthetic_test_001,sbm,Candidate damage predictor,0.08677685950413223,21,synthetic_test
+0.9134615384615384,synthetic_test_001,sbm,Candidate damage predictor,0.09090909090909091,22,synthetic_test
+0.9134615384615384,synthetic_test_001,sbm,Candidate damage predictor,0.09504132231404959,23,synthetic_test
+0.9038461538461539,synthetic_test_001,sbm,Candidate damage predictor,0.09917355371900827,24,synthetic_test
+0.9038461538461539,synthetic_test_001,sbm,Candidate damage predictor,0.10330578512396695,25,synthetic_test
+0.9038461538461539,synthetic_test_001,sbm,Candidate damage predictor,0.10743801652892562,26,synthetic_test
+0.9038461538461539,synthetic_test_001,sbm,Candidate damage predictor,0.1115702479338843,27,synthetic_test
+0.9038461538461539,synthetic_test_001,sbm,Candidate damage predictor,0.11570247933884298,28,synthetic_test
+0.9038461538461539,synthetic_test_001,sbm,Candidate damage predictor,0.11983471074380166,29,synthetic_test
+0.9038461538461539,synthetic_test_001,sbm,Candidate damage predictor,0.12396694214876033,30,synthetic_test
+0.9038461538461539,synthetic_test_001,sbm,Candidate damage predictor,0.128099173553719,31,synthetic_test
+0.9038461538461539,synthetic_test_001,sbm,Candidate damage predictor,0.1322314049586777,32,synthetic_test
+0.9038461538461539,synthetic_test_001,sbm,Candidate damage predictor,0.13636363636363635,33,synthetic_test
+0.8942307692307693,synthetic_test_001,sbm,Candidate damage predictor,0.14049586776859505,34,synthetic_test
+0.8942307692307693,synthetic_test_001,sbm,Candidate damage predictor,0.1446280991735537,35,synthetic_test
+0.8942307692307693,synthetic_test_001,sbm,Candidate damage predictor,0.1487603305785124,36,synthetic_test
+0.8942307692307693,synthetic_test_001,sbm,Candidate damage predictor,0.15289256198347106,37,synthetic_test
+1.0,synthetic_test_001,sbm,M2 dynamic degree product,0.0,0,synthetic_test
+1.0,synthetic_test_001,sbm,M2 dynamic degree product,0.004132231404958678,1,synthetic_test
+1.0,synthetic_test_001,sbm,M2 dynamic degree product,0.008264462809917356,2,synthetic_test
+1.0,synthetic_test_001,sbm,M2 dynamic degree product,0.012396694214876033,3,synthetic_test
+1.0,synthetic_test_001,sbm,M2 dynamic degree product,0.01652892561983471,4,synthetic_test
+1.0,synthetic_test_001,sbm,M2 dynamic degree product,0.02066115702479339,5,synthetic_test
+1.0,synthetic_test_001,sbm,M2 dynamic degree product,0.024793388429752067,6,synthetic_test
+1.0,synthetic_test_001,sbm,M2 dynamic degree product,0.028925619834710745,7,synthetic_test
+1.0,synthetic_test_001,sbm,M2 dynamic degree product,0.03305785123966942,8,synthetic_test
+1.0,synthetic_test_001,sbm,M2 dynamic degree product,0.0371900826446281,9,synthetic_test
+1.0,synthetic_test_001,sbm,M2 dynamic degree product,0.04132231404958678,10,synthetic_test
+1.0,synthetic_test_001,sbm,M2 dynamic degree product,0.045454545454545456,11,synthetic_test
+1.0,synthetic_test_001,sbm,M2 dynamic degree product,0.049586776859504134,12,synthetic_test
+1.0,synthetic_test_001,sbm,M2 dynamic degree product,0.05371900826446281,13,synthetic_test
+1.0,synthetic_test_001,sbm,M2 dynamic degree product,0.05785123966942149,14,synthetic_test
+1.0,synthetic_test_001,sbm,M2 dynamic degree product,0.06198347107438017,15,synthetic_test
+1.0,synthetic_test_001,sbm,M2 dynamic degree product,0.06611570247933884,16,synthetic_test
+1.0,synthetic_test_001,sbm,M2 dynamic degree product,0.07024793388429752,17,synthetic_test
+1.0,synthetic_test_001,sbm,M2 dynamic degree product,0.0743801652892562,18,synthetic_test
+1.0,synthetic_test_001,sbm,M2 dynamic degree product,0.07851239669421488,19,synthetic_test
+1.0,synthetic_test_001,sbm,M2 dynamic degree product,0.08264462809917356,20,synthetic_test
+1.0,synthetic_test_001,sbm,M2 dynamic degree product,0.08677685950413223,21,synthetic_test
+1.0,synthetic_test_001,sbm,M2 dynamic degree product,0.09090909090909091,22,synthetic_test
+1.0,synthetic_test_001,sbm,M2 dynamic degree product,0.09504132231404959,23,synthetic_test
+1.0,synthetic_test_001,sbm,M2 dynamic degree product,0.09917355371900827,24,synthetic_test
+1.0,synthetic_test_001,sbm,M2 dynamic degree product,0.10330578512396695,25,synthetic_test
+1.0,synthetic_test_001,sbm,M2 dynamic degree product,0.10743801652892562,26,synthetic_test
+1.0,synthetic_test_001,sbm,M2 dynamic degree product,0.1115702479338843,27,synthetic_test
+1.0,synthetic_test_001,sbm,M2 dynamic degree product,0.11570247933884298,28,synthetic_test
+1.0,synthetic_test_001,sbm,M2 dynamic degree product,0.11983471074380166,29,synthetic_test
+1.0,synthetic_test_001,sbm,M2 dynamic degree product,0.12396694214876033,30,synthetic_test
+1.0,synthetic_test_001,sbm,M2 dynamic degree product,0.128099173553719,31,synthetic_test
+1.0,synthetic_test_001,sbm,M2 dynamic degree product,0.1322314049586777,32,synthetic_test
+1.0,synthetic_test_001,sbm,M2 dynamic degree product,0.13636363636363635,33,synthetic_test
+1.0,synthetic_test_001,sbm,M2 dynamic degree product,0.14049586776859505,34,synthetic_test
+1.0,synthetic_test_001,sbm,M2 dynamic degree product,0.1446280991735537,35,synthetic_test
+1.0,synthetic_test_001,sbm,M2 dynamic degree product,0.1487603305785124,36,synthetic_test
+1.0,synthetic_test_001,sbm,M2 dynamic degree product,0.15289256198347106,37,synthetic_test
+1.0,synthetic_test_001,sbm,M4 dynamic community internal / pair,0.0,0,synthetic_test
+1.0,synthetic_test_001,sbm,M4 dynamic community internal / pair,0.004132231404958678,1,synthetic_test
+1.0,synthetic_test_001,sbm,M4 dynamic community internal / pair,0.008264462809917356,2,synthetic_test
+1.0,synthetic_test_001,sbm,M4 dynamic community internal / pair,0.012396694214876033,3,synthetic_test
+1.0,synthetic_test_001,sbm,M4 dynamic community internal / pair,0.01652892561983471,4,synthetic_test
+1.0,synthetic_test_001,sbm,M4 dynamic community internal / pair,0.02066115702479339,5,synthetic_test
+1.0,synthetic_test_001,sbm,M4 dynamic community internal / pair,0.024793388429752067,6,synthetic_test
+1.0,synthetic_test_001,sbm,M4 dynamic community internal / pair,0.028925619834710745,7,synthetic_test
+1.0,synthetic_test_001,sbm,M4 dynamic community internal / pair,0.03305785123966942,8,synthetic_test
+1.0,synthetic_test_001,sbm,M4 dynamic community internal / pair,0.0371900826446281,9,synthetic_test
+1.0,synthetic_test_001,sbm,M4 dynamic community internal / pair,0.04132231404958678,10,synthetic_test
+1.0,synthetic_test_001,sbm,M4 dynamic community internal / pair,0.045454545454545456,11,synthetic_test
+1.0,synthetic_test_001,sbm,M4 dynamic community internal / pair,0.049586776859504134,12,synthetic_test
+1.0,synthetic_test_001,sbm,M4 dynamic community internal / pair,0.05371900826446281,13,synthetic_test
+1.0,synthetic_test_001,sbm,M4 dynamic community internal / pair,0.05785123966942149,14,synthetic_test
+1.0,synthetic_test_001,sbm,M4 dynamic community internal / pair,0.06198347107438017,15,synthetic_test
+1.0,synthetic_test_001,sbm,M4 dynamic community internal / pair,0.06611570247933884,16,synthetic_test
+1.0,synthetic_test_001,sbm,M4 dynamic community internal / pair,0.07024793388429752,17,synthetic_test
+1.0,synthetic_test_001,sbm,M4 dynamic community internal / pair,0.0743801652892562,18,synthetic_test
+1.0,synthetic_test_001,sbm,M4 dynamic community internal / pair,0.07851239669421488,19,synthetic_test
+1.0,synthetic_test_001,sbm,M4 dynamic community internal / pair,0.08264462809917356,20,synthetic_test
+1.0,synthetic_test_001,sbm,M4 dynamic community internal / pair,0.08677685950413223,21,synthetic_test
+1.0,synthetic_test_001,sbm,M4 dynamic community internal / pair,0.09090909090909091,22,synthetic_test
+1.0,synthetic_test_001,sbm,M4 dynamic community internal / pair,0.09504132231404959,23,synthetic_test
+1.0,synthetic_test_001,sbm,M4 dynamic community internal / pair,0.09917355371900827,24,synthetic_test
+1.0,synthetic_test_001,sbm,M4 dynamic community internal / pair,0.10330578512396695,25,synthetic_test
+1.0,synthetic_test_001,sbm,M4 dynamic community internal / pair,0.10743801652892562,26,synthetic_test
+1.0,synthetic_test_001,sbm,M4 dynamic community internal / pair,0.1115702479338843,27,synthetic_test
+1.0,synthetic_test_001,sbm,M4 dynamic community internal / pair,0.11570247933884298,28,synthetic_test
+1.0,synthetic_test_001,sbm,M4 dynamic community internal / pair,0.11983471074380166,29,synthetic_test
+1.0,synthetic_test_001,sbm,M4 dynamic community internal / pair,0.12396694214876033,30,synthetic_test
+1.0,synthetic_test_001,sbm,M4 dynamic community internal / pair,0.128099173553719,31,synthetic_test
+1.0,synthetic_test_001,sbm,M4 dynamic community internal / pair,0.1322314049586777,32,synthetic_test
+1.0,synthetic_test_001,sbm,M4 dynamic community internal / pair,0.13636363636363635,33,synthetic_test
+1.0,synthetic_test_001,sbm,M4 dynamic community internal / pair,0.14049586776859505,34,synthetic_test
+1.0,synthetic_test_001,sbm,M4 dynamic community internal / pair,0.1446280991735537,35,synthetic_test
+1.0,synthetic_test_001,sbm,M4 dynamic community internal / pair,0.1487603305785124,36,synthetic_test
+1.0,synthetic_test_001,sbm,M4 dynamic community internal / pair,0.15289256198347106,37,synthetic_test
+1.0,synthetic_test_001,sbm,M5 dynamic edge betweenness,0.0,0,synthetic_test
+1.0,synthetic_test_001,sbm,M5 dynamic edge betweenness,0.004132231404958678,1,synthetic_test
+1.0,synthetic_test_001,sbm,M5 dynamic edge betweenness,0.008264462809917356,2,synthetic_test
+1.0,synthetic_test_001,sbm,M5 dynamic edge betweenness,0.012396694214876033,3,synthetic_test
+1.0,synthetic_test_001,sbm,M5 dynamic edge betweenness,0.01652892561983471,4,synthetic_test
+0.9519230769230769,synthetic_test_001,sbm,M5 dynamic edge betweenness,0.02066115702479339,5,synthetic_test
+0.9519230769230769,synthetic_test_001,sbm,M5 dynamic edge betweenness,0.024793388429752067,6,synthetic_test
+0.9519230769230769,synthetic_test_001,sbm,M5 dynamic edge betweenness,0.028925619834710745,7,synthetic_test
+0.9519230769230769,synthetic_test_001,sbm,M5 dynamic edge betweenness,0.03305785123966942,8,synthetic_test
+0.9519230769230769,synthetic_test_001,sbm,M5 dynamic edge betweenness,0.0371900826446281,9,synthetic_test
+0.9519230769230769,synthetic_test_001,sbm,M5 dynamic edge betweenness,0.04132231404958678,10,synthetic_test
+0.9519230769230769,synthetic_test_001,sbm,M5 dynamic edge betweenness,0.045454545454545456,11,synthetic_test
+0.9230769230769231,synthetic_test_001,sbm,M5 dynamic edge betweenness,0.049586776859504134,12,synthetic_test
+0.9230769230769231,synthetic_test_001,sbm,M5 dynamic edge betweenness,0.05371900826446281,13,synthetic_test
+0.9230769230769231,synthetic_test_001,sbm,M5 dynamic edge betweenness,0.05785123966942149,14,synthetic_test
+0.8846153846153846,synthetic_test_001,sbm,M5 dynamic edge betweenness,0.06198347107438017,15,synthetic_test
+0.8846153846153846,synthetic_test_001,sbm,M5 dynamic edge betweenness,0.06611570247933884,16,synthetic_test
+0.8846153846153846,synthetic_test_001,sbm,M5 dynamic edge betweenness,0.07024793388429752,17,synthetic_test
+0.8846153846153846,synthetic_test_001,sbm,M5 dynamic edge betweenness,0.0743801652892562,18,synthetic_test
+0.8846153846153846,synthetic_test_001,sbm,M5 dynamic edge betweenness,0.07851239669421488,19,synthetic_test
+0.8846153846153846,synthetic_test_001,sbm,M5 dynamic edge betweenness,0.08264462809917356,20,synthetic_test
+0.8846153846153846,synthetic_test_001,sbm,M5 dynamic edge betweenness,0.08677685950413223,21,synthetic_test
+0.8846153846153846,synthetic_test_001,sbm,M5 dynamic edge betweenness,0.09090909090909091,22,synthetic_test
+0.8846153846153846,synthetic_test_001,sbm,M5 dynamic edge betweenness,0.09504132231404959,23,synthetic_test
+0.8846153846153846,synthetic_test_001,sbm,M5 dynamic edge betweenness,0.09917355371900827,24,synthetic_test
+0.8846153846153846,synthetic_test_001,sbm,M5 dynamic edge betweenness,0.10330578512396695,25,synthetic_test
+0.8846153846153846,synthetic_test_001,sbm,M5 dynamic edge betweenness,0.10743801652892562,26,synthetic_test
+0.8846153846153846,synthetic_test_001,sbm,M5 dynamic edge betweenness,0.1115702479338843,27,synthetic_test
+0.8846153846153846,synthetic_test_001,sbm,M5 dynamic edge betweenness,0.11570247933884298,28,synthetic_test
+0.8557692307692307,synthetic_test_001,sbm,M5 dynamic edge betweenness,0.11983471074380166,29,synthetic_test
+0.8557692307692307,synthetic_test_001,sbm,M5 dynamic edge betweenness,0.12396694214876033,30,synthetic_test
+0.8557692307692307,synthetic_test_001,sbm,M5 dynamic edge betweenness,0.128099173553719,31,synthetic_test
+0.8557692307692307,synthetic_test_001,sbm,M5 dynamic edge betweenness,0.1322314049586777,32,synthetic_test
+0.8557692307692307,synthetic_test_001,sbm,M5 dynamic edge betweenness,0.13636363636363635,33,synthetic_test
+0.8557692307692307,synthetic_test_001,sbm,M5 dynamic edge betweenness,0.14049586776859505,34,synthetic_test
+0.8557692307692307,synthetic_test_001,sbm,M5 dynamic edge betweenness,0.1446280991735537,35,synthetic_test
+0.8557692307692307,synthetic_test_001,sbm,M5 dynamic edge betweenness,0.1487603305785124,36,synthetic_test
+0.7596153846153846,synthetic_test_001,sbm,M5 dynamic edge betweenness,0.15289256198347106,37,synthetic_test
+1.0,synthetic_test_001,sbm,M7 dynamic community size / pair,0.0,0,synthetic_test
+1.0,synthetic_test_001,sbm,M7 dynamic community size / pair,0.004132231404958678,1,synthetic_test
+1.0,synthetic_test_001,sbm,M7 dynamic community size / pair,0.008264462809917356,2,synthetic_test
+1.0,synthetic_test_001,sbm,M7 dynamic community size / pair,0.012396694214876033,3,synthetic_test
+1.0,synthetic_test_001,sbm,M7 dynamic community size / pair,0.01652892561983471,4,synthetic_test
+1.0,synthetic_test_001,sbm,M7 dynamic community size / pair,0.02066115702479339,5,synthetic_test
+1.0,synthetic_test_001,sbm,M7 dynamic community size / pair,0.024793388429752067,6,synthetic_test
+1.0,synthetic_test_001,sbm,M7 dynamic community size / pair,0.028925619834710745,7,synthetic_test
+1.0,synthetic_test_001,sbm,M7 dynamic community size / pair,0.03305785123966942,8,synthetic_test
+1.0,synthetic_test_001,sbm,M7 dynamic community size / pair,0.0371900826446281,9,synthetic_test
+1.0,synthetic_test_001,sbm,M7 dynamic community size / pair,0.04132231404958678,10,synthetic_test
+1.0,synthetic_test_001,sbm,M7 dynamic community size / pair,0.045454545454545456,11,synthetic_test
+1.0,synthetic_test_001,sbm,M7 dynamic community size / pair,0.049586776859504134,12,synthetic_test
+1.0,synthetic_test_001,sbm,M7 dynamic community size / pair,0.05371900826446281,13,synthetic_test
+1.0,synthetic_test_001,sbm,M7 dynamic community size / pair,0.05785123966942149,14,synthetic_test
+1.0,synthetic_test_001,sbm,M7 dynamic community size / pair,0.06198347107438017,15,synthetic_test
+1.0,synthetic_test_001,sbm,M7 dynamic community size / pair,0.06611570247933884,16,synthetic_test
+1.0,synthetic_test_001,sbm,M7 dynamic community size / pair,0.07024793388429752,17,synthetic_test
+1.0,synthetic_test_001,sbm,M7 dynamic community size / pair,0.0743801652892562,18,synthetic_test
+1.0,synthetic_test_001,sbm,M7 dynamic community size / pair,0.07851239669421488,19,synthetic_test
+1.0,synthetic_test_001,sbm,M7 dynamic community size / pair,0.08264462809917356,20,synthetic_test
+1.0,synthetic_test_001,sbm,M7 dynamic community size / pair,0.08677685950413223,21,synthetic_test
+1.0,synthetic_test_001,sbm,M7 dynamic community size / pair,0.09090909090909091,22,synthetic_test
+1.0,synthetic_test_001,sbm,M7 dynamic community size / pair,0.09504132231404959,23,synthetic_test
+1.0,synthetic_test_001,sbm,M7 dynamic community size / pair,0.09917355371900827,24,synthetic_test
+1.0,synthetic_test_001,sbm,M7 dynamic community size / pair,0.10330578512396695,25,synthetic_test
+1.0,synthetic_test_001,sbm,M7 dynamic community size / pair,0.10743801652892562,26,synthetic_test
+1.0,synthetic_test_001,sbm,M7 dynamic community size / pair,0.1115702479338843,27,synthetic_test
+1.0,synthetic_test_001,sbm,M7 dynamic community size / pair,0.11570247933884298,28,synthetic_test
+1.0,synthetic_test_001,sbm,M7 dynamic community size / pair,0.11983471074380166,29,synthetic_test
+1.0,synthetic_test_001,sbm,M7 dynamic community size / pair,0.12396694214876033,30,synthetic_test
+1.0,synthetic_test_001,sbm,M7 dynamic community size / pair,0.128099173553719,31,synthetic_test
+1.0,synthetic_test_001,sbm,M7 dynamic community size / pair,0.1322314049586777,32,synthetic_test
+1.0,synthetic_test_001,sbm,M7 dynamic community size / pair,0.13636363636363635,33,synthetic_test
+1.0,synthetic_test_001,sbm,M7 dynamic community size / pair,0.14049586776859505,34,synthetic_test
+1.0,synthetic_test_001,sbm,M7 dynamic community size / pair,0.1446280991735537,35,synthetic_test
+1.0,synthetic_test_001,sbm,M7 dynamic community size / pair,0.1487603305785124,36,synthetic_test
+1.0,synthetic_test_001,sbm,M7 dynamic community size / pair,0.15289256198347106,37,synthetic_test
+1.0,synthetic_test_001,sbm,M8 dynamic community bridge-degree,0.0,0,synthetic_test
+1.0,synthetic_test_001,sbm,M8 dynamic community bridge-degree,0.004132231404958678,1,synthetic_test
+1.0,synthetic_test_001,sbm,M8 dynamic community bridge-degree,0.008264462809917356,2,synthetic_test
+1.0,synthetic_test_001,sbm,M8 dynamic community bridge-degree,0.012396694214876033,3,synthetic_test
+1.0,synthetic_test_001,sbm,M8 dynamic community bridge-degree,0.01652892561983471,4,synthetic_test
+1.0,synthetic_test_001,sbm,M8 dynamic community bridge-degree,0.02066115702479339,5,synthetic_test
+1.0,synthetic_test_001,sbm,M8 dynamic community bridge-degree,0.024793388429752067,6,synthetic_test
+1.0,synthetic_test_001,sbm,M8 dynamic community bridge-degree,0.028925619834710745,7,synthetic_test
+1.0,synthetic_test_001,sbm,M8 dynamic community bridge-degree,0.03305785123966942,8,synthetic_test
+1.0,synthetic_test_001,sbm,M8 dynamic community bridge-degree,0.0371900826446281,9,synthetic_test
+1.0,synthetic_test_001,sbm,M8 dynamic community bridge-degree,0.04132231404958678,10,synthetic_test
+1.0,synthetic_test_001,sbm,M8 dynamic community bridge-degree,0.045454545454545456,11,synthetic_test
+1.0,synthetic_test_001,sbm,M8 dynamic community bridge-degree,0.049586776859504134,12,synthetic_test
+1.0,synthetic_test_001,sbm,M8 dynamic community bridge-degree,0.05371900826446281,13,synthetic_test
+1.0,synthetic_test_001,sbm,M8 dynamic community bridge-degree,0.05785123966942149,14,synthetic_test
+1.0,synthetic_test_001,sbm,M8 dynamic community bridge-degree,0.06198347107438017,15,synthetic_test
+1.0,synthetic_test_001,sbm,M8 dynamic community bridge-degree,0.06611570247933884,16,synthetic_test
+1.0,synthetic_test_001,sbm,M8 dynamic community bridge-degree,0.07024793388429752,17,synthetic_test
+1.0,synthetic_test_001,sbm,M8 dynamic community bridge-degree,0.0743801652892562,18,synthetic_test
+1.0,synthetic_test_001,sbm,M8 dynamic community bridge-degree,0.07851239669421488,19,synthetic_test
+1.0,synthetic_test_001,sbm,M8 dynamic community bridge-degree,0.08264462809917356,20,synthetic_test
+1.0,synthetic_test_001,sbm,M8 dynamic community bridge-degree,0.08677685950413223,21,synthetic_test
+1.0,synthetic_test_001,sbm,M8 dynamic community bridge-degree,0.09090909090909091,22,synthetic_test
+1.0,synthetic_test_001,sbm,M8 dynamic community bridge-degree,0.09504132231404959,23,synthetic_test
+1.0,synthetic_test_001,sbm,M8 dynamic community bridge-degree,0.09917355371900827,24,synthetic_test
+1.0,synthetic_test_001,sbm,M8 dynamic community bridge-degree,0.10330578512396695,25,synthetic_test
+1.0,synthetic_test_001,sbm,M8 dynamic community bridge-degree,0.10743801652892562,26,synthetic_test
+1.0,synthetic_test_001,sbm,M8 dynamic community bridge-degree,0.1115702479338843,27,synthetic_test
+1.0,synthetic_test_001,sbm,M8 dynamic community bridge-degree,0.11570247933884298,28,synthetic_test
+1.0,synthetic_test_001,sbm,M8 dynamic community bridge-degree,0.11983471074380166,29,synthetic_test
+1.0,synthetic_test_001,sbm,M8 dynamic community bridge-degree,0.12396694214876033,30,synthetic_test
+1.0,synthetic_test_001,sbm,M8 dynamic community bridge-degree,0.128099173553719,31,synthetic_test
+1.0,synthetic_test_001,sbm,M8 dynamic community bridge-degree,0.1322314049586777,32,synthetic_test
+1.0,synthetic_test_001,sbm,M8 dynamic community bridge-degree,0.13636363636363635,33,synthetic_test
+1.0,synthetic_test_001,sbm,M8 dynamic community bridge-degree,0.14049586776859505,34,synthetic_test
+1.0,synthetic_test_001,sbm,M8 dynamic community bridge-degree,0.1446280991735537,35,synthetic_test
+1.0,synthetic_test_001,sbm,M8 dynamic community bridge-degree,0.1487603305785124,36,synthetic_test
+1.0,synthetic_test_001,sbm,M8 dynamic community bridge-degree,0.15289256198347106,37,synthetic_test

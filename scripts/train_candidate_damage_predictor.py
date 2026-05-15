@@ -39,6 +39,8 @@ SOURCE_COLUMNS = [
     "source_m5",
     "source_m7",
     "source_m8",
+    "source_bridge",
+    "source_random",
 ]
 SOURCE_LABELS = {
     "m2": "M2 dynamic degree product",
@@ -46,6 +48,8 @@ SOURCE_LABELS = {
     "m5": "M5 dynamic edge betweenness",
     "m7": "M7 dynamic community size / pair",
     "m8": "M8 dynamic community bridge-degree",
+    "bridge": "Bridge candidates",
+    "random": "Random candidates",
 }
 
 
@@ -179,7 +183,28 @@ def top_community_edges(graph, top_k, mode):
     return [edge for _, edge in rows[:top_k]]
 
 
-def candidate_edges(graph, top_k):
+def top_bridge_edges(graph, top_k):
+    if top_k <= 0 or graph.number_of_edges() == 0:
+        return []
+    degrees = dict(graph.degree())
+    rows = [
+        (degrees[u] * degrees[v], edge_sort_key((u, v)))
+        for u, v in nx.bridges(graph)
+    ]
+    rows.sort(key=lambda item: (-item[0], item[1]))
+    return [edge for _, edge in rows[:top_k]]
+
+
+def random_candidate_edges(graph, count, seed_offset):
+    if count <= 0 or graph.number_of_edges() == 0:
+        return []
+    edges = sorted(edge_sort_key(edge) for edge in graph.edges())
+    rng = random.Random(SEED + seed_offset)
+    rng.shuffle(edges)
+    return edges[: min(count, len(edges))]
+
+
+def candidate_edges(graph, top_k, random_candidate_count=0, bridge_top_k=0, seed_offset=0):
     h_graph = largest_cc_subgraph(graph)
     source_edges = {
         "m2": top_degree_product_edges(h_graph, top_k),
@@ -187,6 +212,8 @@ def candidate_edges(graph, top_k):
         "m5": top_betweenness_edges(h_graph, top_k),
         "m7": top_community_edges(h_graph, top_k, "m7"),
         "m8": top_community_edges(h_graph, top_k, "m8"),
+        "bridge": top_bridge_edges(h_graph, bridge_top_k),
+        "random": random_candidate_edges(h_graph, random_candidate_count, seed_offset),
     }
     edge_info = {}
     for source, edges in source_edges.items():
@@ -302,7 +329,15 @@ def choose_dynamic_edge(graph, method):
     return next(iter(edges))
 
 
-def collect_candidate_rows_for_graph(group, top_k, max_steps, max_remove_ratio, rollout_policy):
+def collect_candidate_rows_for_graph(
+    group,
+    top_k,
+    random_candidate_count,
+    bridge_top_k,
+    max_steps,
+    max_remove_ratio,
+    rollout_policy,
+):
     graph = reconstruct_graph(group)
     original_n = graph.number_of_nodes()
     original_m = max(1, graph.number_of_edges())
@@ -319,7 +354,13 @@ def collect_candidate_rows_for_graph(group, top_k, max_steps, max_remove_ratio, 
             break
         if max_remove_ratio and step / float(original_m) >= max_remove_ratio:
             break
-        edge_info = candidate_edges(graph, top_k)
+        edge_info = candidate_edges(
+            graph,
+            top_k,
+            random_candidate_count=random_candidate_count,
+            bridge_top_k=bridge_top_k,
+            seed_offset=original_m * 1009 + step,
+        )
         rows.extend(dynamic_features_for_candidates(graph, edge_info, original_n, meta, step))
 
         if rollout_policy == "m5":
@@ -348,7 +389,17 @@ def collect_candidate_rows_for_graph(group, top_k, max_steps, max_remove_ratio, 
     return rows
 
 
-def build_candidate_dataset(split_names, top_k, max_steps, max_remove_ratio, max_graphs, graph_ids, rollout_policy):
+def build_candidate_dataset(
+    split_names,
+    top_k,
+    random_candidate_count,
+    bridge_top_k,
+    max_steps,
+    max_remove_ratio,
+    max_graphs,
+    graph_ids,
+    rollout_policy,
+):
     frames = [read_split(name) for name in split_names]
     df = pd.concat(frames, ignore_index=True)
     if graph_ids:
@@ -365,6 +416,8 @@ def build_candidate_dataset(split_names, top_k, max_steps, max_remove_ratio, max
             collect_candidate_rows_for_graph(
                 group,
                 top_k=top_k,
+                random_candidate_count=random_candidate_count,
+                bridge_top_k=bridge_top_k,
                 max_steps=max_steps,
                 max_remove_ratio=max_remove_ratio,
                 rollout_policy=rollout_policy,
@@ -471,7 +524,16 @@ def should_stop_attack(step, original_m, max_attack_steps, attack_max_remove_rat
     return False
 
 
-def attack_curve_for_model(group, model, feature_cols, top_k, max_attack_steps, attack_max_remove_ratio):
+def attack_curve_for_model(
+    group,
+    model,
+    feature_cols,
+    top_k,
+    random_candidate_count,
+    bridge_top_k,
+    max_attack_steps,
+    attack_max_remove_ratio,
+):
     graph = reconstruct_graph(group)
     original_n = graph.number_of_nodes()
     original_m = max(1, graph.number_of_edges())
@@ -485,7 +547,13 @@ def attack_curve_for_model(group, model, feature_cols, top_k, max_attack_steps, 
     while graph.number_of_edges() > 0 and not should_stop_attack(
         step, original_m, max_attack_steps, attack_max_remove_ratio
     ):
-        edge_info = candidate_edges(graph, top_k)
+        edge_info = candidate_edges(
+            graph,
+            top_k,
+            random_candidate_count=random_candidate_count,
+            bridge_top_k=bridge_top_k,
+            seed_offset=original_m * 1009 + step,
+        )
         candidate_rows = dynamic_features_for_candidates(graph, edge_info, original_n, meta, step)
         if not candidate_rows:
             break
@@ -564,6 +632,8 @@ def evaluate_attack_curves(
     eval_df,
     feature_cols,
     top_k,
+    random_candidate_count,
+    bridge_top_k,
     attack_splits,
     max_eval_graphs,
     graph_ids,
@@ -584,7 +654,14 @@ def evaluate_attack_curves(
         label = f"{group['split'].iloc[0]}/{group['graph_id'].iloc[0]}"
         print(f"[attack {index:03d}/{len(groups):03d}] {label}", flush=True)
         rows = attack_curve_for_model(
-            group, model, feature_cols, top_k, max_attack_steps, attack_max_remove_ratio
+            group,
+            model,
+            feature_cols,
+            top_k,
+            random_candidate_count,
+            bridge_top_k,
+            max_attack_steps,
+            attack_max_remove_ratio,
         )
         curve_rows.extend(rows)
         summary_rows.append(summarize_curve(pd.DataFrame(rows)))
@@ -672,6 +749,8 @@ def write_notes(aggregate_df, candidate_aggregate_df, args):
         "",
         f"- model_type={args.model_type}",
         f"- top_k={args.top_k}",
+        f"- random_candidate_count={args.random_candidates}",
+        f"- bridge_top_k={args.bridge_top_k}",
         f"- rollout_policy={args.rollout_policy}",
         f"- max_train_steps={args.max_train_steps}",
         f"- train_max_remove_ratio={args.train_max_remove_ratio}",
@@ -701,6 +780,18 @@ def write_notes(aggregate_df, candidate_aggregate_df, args):
 def parse_args():
     parser = argparse.ArgumentParser(description="Train a candidate-set damage predictor for edge attacks.")
     parser.add_argument("--top-k", type=int, default=5)
+    parser.add_argument(
+        "--random-candidates",
+        type=int,
+        default=0,
+        help="Number of extra random candidate edges to add at each state.",
+    )
+    parser.add_argument(
+        "--bridge-top-k",
+        type=int,
+        default=0,
+        help="Number of bridge candidate edges to add at each state, ranked by degree product.",
+    )
     parser.add_argument("--model-type", choices=["mlp", "random_forest", "gbdt"], default="gbdt")
     parser.add_argument("--max-iter", type=int, default=180)
     parser.add_argument("--train-splits", default="synthetic_train")
@@ -729,6 +820,8 @@ def main():
     train_candidate_df = build_candidate_dataset(
         parse_list(args.train_splits),
         top_k=args.top_k,
+        random_candidate_count=args.random_candidates,
+        bridge_top_k=args.bridge_top_k,
         max_steps=args.max_train_steps,
         max_remove_ratio=args.train_max_remove_ratio,
         max_graphs=args.max_train_graphs,
@@ -743,6 +836,8 @@ def main():
     eval_candidate_df = build_candidate_dataset(
         parse_list(args.eval_splits),
         top_k=args.top_k,
+        random_candidate_count=args.random_candidates,
+        bridge_top_k=args.bridge_top_k,
         max_steps=args.max_train_steps,
         max_remove_ratio=args.train_max_remove_ratio,
         max_graphs=args.max_eval_graphs,
@@ -761,6 +856,8 @@ def main():
         eval_df,
         feature_cols,
         top_k=args.top_k,
+        random_candidate_count=args.random_candidates,
+        bridge_top_k=args.bridge_top_k,
         attack_splits=parse_list(args.attack_splits),
         max_eval_graphs=args.max_eval_graphs,
         graph_ids=graph_ids,
@@ -786,6 +883,8 @@ def main():
                 "feature_cols": feature_cols,
                 "target": "gcc_delta",
                 "top_k": args.top_k,
+                "random_candidates": args.random_candidates,
+                "bridge_top_k": args.bridge_top_k,
                 "model_type": args.model_type,
             },
             handle,
