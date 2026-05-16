@@ -1,0 +1,7 @@
+﻿mean_auc,mean_remove_ratio_gcc_le_0_1,mean_remove_ratio_gcc_le_0_2,mean_remove_ratio_gcc_le_0_5,median_auc,method,num_graphs,split,std_auc
+0.09886137712391646,,,,0.10835222363955943,Candidate damage predictor,6,synthetic_test,0.043847495178323655
+0.10282132002941614,,,,0.10963148330205262,M2 dynamic degree product,6,synthetic_test,0.04828325045420855
+0.10282132002941614,,,,0.10963148330205262,M4 dynamic community internal / pair,6,synthetic_test,0.04828325045420855
+0.09785525824763482,,,,0.108439927020676,M5 dynamic edge betweenness,6,synthetic_test,0.043289010401875175
+0.10282132002941614,,,,0.10963148330205262,M7 dynamic community size / pair,6,synthetic_test,0.04828325045420855
+0.10282132002941614,,,,0.10963148330205262,M8 dynamic community bridge-degree,6,synthetic_test,0.04828325045420855

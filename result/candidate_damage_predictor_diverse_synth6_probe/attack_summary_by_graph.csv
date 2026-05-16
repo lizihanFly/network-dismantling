@@ -1,0 +1,37 @@
+﻿auc,graph_id,graph_type,method,remove_ratio_gcc_le_0_1,remove_ratio_gcc_le_0_2,remove_ratio_gcc_le_0_5,split
+0.055710306406685235,synthetic_test_000,sbm,Candidate damage predictor,,,,synthetic_test
+0.055710306406685235,synthetic_test_000,sbm,M2 dynamic degree product,,,,synthetic_test
+0.055710306406685235,synthetic_test_000,sbm,M4 dynamic community internal / pair,,,,synthetic_test
+0.0550399825668429,synthetic_test_000,sbm,M5 dynamic edge betweenness,,,,synthetic_test
+0.055710306406685235,synthetic_test_000,sbm,M7 dynamic community size / pair,,,,synthetic_test
+0.055710306406685235,synthetic_test_000,sbm,M8 dynamic community bridge-degree,,,,synthetic_test
+0.14089319771137948,synthetic_test_001,sbm,Candidate damage predictor,,,,synthetic_test
+0.15289256198347106,synthetic_test_001,sbm,M2 dynamic degree product,,,,synthetic_test
+0.15289256198347106,synthetic_test_001,sbm,M4 dynamic community internal / pair,,,,synthetic_test
+0.13860855054036872,synthetic_test_001,sbm,M5 dynamic edge betweenness,,,,synthetic_test
+0.15289256198347106,synthetic_test_001,sbm,M7 dynamic community size / pair,,,,synthetic_test
+0.15289256198347106,synthetic_test_001,sbm,M8 dynamic community bridge-degree,,,,synthetic_test
+0.14231337767923133,synthetic_test_002,sbm,Candidate damage predictor,,,,synthetic_test
+0.15151515151515152,synthetic_test_002,sbm,M2 dynamic degree product,,,,synthetic_test
+0.15151515151515152,synthetic_test_002,sbm,M4 dynamic community internal / pair,,,,synthetic_test
+0.1398250800689825,synthetic_test_002,sbm,M5 dynamic edge betweenness,,,,synthetic_test
+0.15151515151515152,synthetic_test_002,sbm,M7 dynamic community size / pair,,,,synthetic_test
+0.15151515151515152,synthetic_test_002,sbm,M8 dynamic community bridge-degree,,,,synthetic_test
+0.11720195971692979,synthetic_test_003,er,Candidate damage predictor,,,,synthetic_test
+0.11976047904191618,synthetic_test_003,er,M2 dynamic degree product,,,,synthetic_test
+0.11976047904191618,synthetic_test_003,er,M4 dynamic community internal / pair,,,,synthetic_test
+0.11737736647916293,synthetic_test_003,er,M5 dynamic edge betweenness,,,,synthetic_test
+0.11976047904191618,synthetic_test_003,er,M7 dynamic community size / pair,,,,synthetic_test
+0.11976047904191618,synthetic_test_003,er,M8 dynamic community bridge-degree,,,,synthetic_test
+0.03754693366708386,synthetic_test_004,sbm,Candidate damage predictor,,,,synthetic_test
+0.03754693366708386,synthetic_test_004,sbm,M2 dynamic degree product,,,,synthetic_test
+0.03754693366708386,synthetic_test_004,sbm,M4 dynamic community internal / pair,,,,synthetic_test
+0.03677808226826285,synthetic_test_004,sbm,M5 dynamic edge betweenness,,,,synthetic_test
+0.03754693366708386,synthetic_test_004,sbm,M7 dynamic community size / pair,,,,synthetic_test
+0.03754693366708386,synthetic_test_004,sbm,M8 dynamic community bridge-degree,,,,synthetic_test
+0.09950248756218906,synthetic_test_005,ba,Candidate damage predictor,,,,synthetic_test
+0.09950248756218906,synthetic_test_005,ba,M2 dynamic degree product,,,,synthetic_test
+0.09950248756218906,synthetic_test_005,ba,M4 dynamic community internal / pair,,,,synthetic_test
+0.09950248756218906,synthetic_test_005,ba,M5 dynamic edge betweenness,,,,synthetic_test
+0.09950248756218906,synthetic_test_005,ba,M7 dynamic community size / pair,,,,synthetic_test
+0.09950248756218906,synthetic_test_005,ba,M8 dynamic community bridge-degree,,,,synthetic_test

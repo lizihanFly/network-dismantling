@@ -793,6 +793,52 @@ D:\ana\python.exe scripts\train_candidate_damage_predictor.py --top-k 5 --random
 3. 尝试 pairwise/listwise ranking loss，因为 h-step damage 的绝对值更难回归。
 4. 如果 h=3 仍不提升，再考虑用 GNN 或 RL 学长期策略。
 
+### 8.9 扩大 synthetic_test 测试规模
+
+前面的 diverse candidate probe 只用了 2 个 synthetic_test 图，测试集太小，只能作为方向验证。已经补跑一个更大的 one-step diverse candidate probe：
+
+```powershell
+D:\ana\python.exe scripts\train_candidate_damage_predictor.py --top-k 5 --random-candidates 8 --bridge-top-k 8 --damage-horizon 1 --max-train-graphs 12 --max-eval-graphs 6 --max-train-steps 30 --train-max-remove-ratio 0.15 --max-attack-steps 60 --attack-max-remove-ratio 0.15 --eval-splits synthetic_test --attack-splits synthetic_test --out-dir result\candidate_damage_predictor_diverse_synth6_probe
+```
+
+设置：
+
+- 训练图：12 个 synthetic_train 图。
+- 测试图：6 个 synthetic_test 图。
+- 训练候选样本：9523 行。
+- 测试候选样本：4907 行。
+- 攻击评估：前 15% 删除比例。
+- 候选集：M2/M4/M5/M7/M8 top-5 + 8 条 random candidates + 8 条 bridge candidates。
+
+结果：
+
+| Method | synthetic_test mean AUC, first 15% removal |
+| --- | ---: |
+| M5 dynamic edge betweenness | 0.097855 |
+| Candidate damage predictor, diverse candidates | 0.098861 |
+| M2 dynamic degree product | 0.102821 |
+| M4 dynamic community internal / pair | 0.102821 |
+| M7 dynamic community size / pair | 0.102821 |
+| M8 dynamic community bridge-degree | 0.102821 |
+
+候选排序质量：
+
+| Metric | Value |
+| --- | ---: |
+| states | 180 |
+| mean candidate count | 27.26 |
+| mean top1 hit | 1.000 |
+| mean chosen/best delta ratio | 1.000 |
+| mean Spearman | 0.298 |
+| mean Kendall | 0.295 |
+
+解释：
+
+- 测试图从 2 个扩大到 6 个后，结论仍然稳定：damage predictor 优于 M2/M4/M7/M8，接近但略弱于 M5。
+- 从逐图结果看，模型多数时候与 M5 非常接近，但在 synthetic_test_001 和 synthetic_test_002 上略差。
+- 当前 one-step damage predictor 已经是一个比较强的轻量学习基线，但仍没有稳定超过 M5。
+- 后续要进一步扩大到全部 18 个 synthetic_test 图和真实网络，需要先优化运行速度，否则完整动态评估耗时会很高。
+
 一个最小 smoke test 已跑通：
 
 ```powershell
