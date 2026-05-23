@@ -3,6 +3,7 @@ import argparse
 import json
 import pickle
 import random
+import time
 import warnings
 
 import community as community_louvain
@@ -13,6 +14,7 @@ import pandas as pd
 from scipy.stats import kendalltau, spearmanr
 from sklearn.ensemble import GradientBoostingRegressor, RandomForestRegressor
 from sklearn.exceptions import ConvergenceWarning
+from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import mean_absolute_error, mean_squared_error
 from sklearn.neural_network import MLPRegressor
 from sklearn.pipeline import Pipeline
@@ -39,6 +41,8 @@ SOURCE_COLUMNS = [
     "source_m5",
     "source_m7",
     "source_m8",
+    "source_stale_eb",
+    "source_path_bridge",
     "source_bridge",
     "source_random",
 ]
@@ -46,19 +50,53 @@ SOURCE_LABELS = {
     "m2": "M2 dynamic degree product",
     "m4": "M4 dynamic community internal / pair",
     "m5": "M5 dynamic edge betweenness",
+    "sampled_eb": "Sampled edge betweenness candidates",
+    "stale_eb": "Stale edge betweenness candidates",
     "m7": "M7 dynamic community size / pair",
     "m8": "M8 dynamic community bridge-degree",
+    "path_bridge": "Shortest-path bridge candidates",
     "bridge": "Bridge candidates",
     "random": "Random candidates",
 }
+ALL_CANDIDATE_SOURCES = tuple(SOURCE_LABELS.keys())
 
 
 def parse_list(text):
     return [part.strip() for part in text.split(",") if part.strip()]
 
 
+def parse_candidate_sources(text):
+    sources = parse_list(text)
+    unknown = sorted(set(sources) - set(ALL_CANDIDATE_SOURCES))
+    if unknown:
+        raise ValueError(f"Unknown candidate sources: {', '.join(unknown)}")
+    return sources or list(ALL_CANDIDATE_SOURCES)
+
+
 def read_split(name):
     return pd.read_csv(DATA_DIR / f"edge_features_{name}.csv")
+
+
+def select_graph_groups(df, max_graphs=None, max_graphs_per_group=None):
+    groups = list(df.groupby(["split", "graph_id"], sort=False))
+    if max_graphs_per_group:
+        selected = []
+        counts = {}
+        for key, group in groups:
+            group_key = (
+                group["split"].iloc[0],
+                group["graph_type"].iloc[0],
+                group["community_strength"].iloc[0]
+                if "community_strength" in group.columns
+                else "unknown",
+            )
+            counts[group_key] = counts.get(group_key, 0) + 1
+            if counts[group_key] <= max_graphs_per_group:
+                selected.append((key, group))
+        groups = selected
+    if max_graphs:
+        groups = groups[:max_graphs]
+    return groups
 
 
 def edge_sort_key(edge):
@@ -102,7 +140,17 @@ def gcc_delta_for_edge(graph, edge, original_n):
     return max(0.0, before - after)
 
 
-def rollout_edge(graph, policy, top_k, random_candidate_count, bridge_top_k, original_n, seed_offset):
+def rollout_edge(
+    graph,
+    policy,
+    top_k,
+    random_candidate_count,
+    bridge_top_k,
+    original_n,
+    seed_offset,
+    candidate_sources=None,
+    sampled_eb_k=16,
+):
     if policy == "m5":
         return choose_dynamic_edge(graph, "M5 dynamic edge betweenness")
     edge_info = candidate_edges(
@@ -111,6 +159,8 @@ def rollout_edge(graph, policy, top_k, random_candidate_count, bridge_top_k, ori
         random_candidate_count=random_candidate_count,
         bridge_top_k=bridge_top_k,
         seed_offset=seed_offset,
+        candidate_sources=candidate_sources,
+        sampled_eb_k=sampled_eb_k,
     )
     if not edge_info:
         return None
@@ -139,6 +189,8 @@ def h_step_gcc_delta_for_edge(
     random_candidate_count,
     bridge_top_k,
     seed_offset,
+    candidate_sources=None,
+    sampled_eb_k=16,
 ):
     if horizon <= 1:
         return gcc_delta_for_edge(graph, edge, original_n)
@@ -159,6 +211,8 @@ def h_step_gcc_delta_for_edge(
             bridge_top_k,
             original_n,
             seed_offset + depth + 1,
+            candidate_sources=candidate_sources,
+            sampled_eb_k=sampled_eb_k,
         )
         if rollout is None or not sim_graph.has_edge(*rollout):
             break
@@ -212,6 +266,21 @@ def top_betweenness_edges(graph, top_k):
     return [edge for _, edge in rows[:top_k]]
 
 
+def top_sampled_betweenness_edges(graph, top_k, sample_k, seed_offset):
+    if graph.number_of_edges() == 0:
+        return []
+    k = min(max(1, sample_k), graph.number_of_nodes())
+    betweenness = nx.edge_betweenness_centrality(
+        graph,
+        k=k,
+        normalized=True,
+        seed=SEED + seed_offset,
+    )
+    rows = [(score, edge_sort_key(edge)) for edge, score in betweenness.items()]
+    rows.sort(key=lambda item: (-item[0], item[1]))
+    return [edge for _, edge in rows[:top_k]]
+
+
 def top_community_edges(graph, top_k, mode):
     if graph.number_of_edges() == 0:
         return []
@@ -260,6 +329,25 @@ def top_bridge_edges(graph, top_k):
     return [edge for _, edge in rows[:top_k]]
 
 
+def top_path_bridge_edges(graph, top_k):
+    if top_k <= 0 or graph.number_of_edges() == 0:
+        return []
+    bridges = {edge_sort_key(edge) for edge in nx.bridges(graph)}
+    if not bridges:
+        return []
+    degrees = dict(graph.degree())
+    closeness = nx.closeness_centrality(graph)
+    rows = []
+    for u, v in bridges:
+        score = (
+            degrees[u] * degrees[v],
+            closeness.get(u, 0.0) + closeness.get(v, 0.0),
+        )
+        rows.append((score, edge_sort_key((u, v))))
+    rows.sort(key=lambda item: (-item[0][0], -item[0][1], item[1]))
+    return [edge for _, edge in rows[:top_k]]
+
+
 def random_candidate_edges(graph, count, seed_offset):
     if count <= 0 or graph.number_of_edges() == 0:
         return []
@@ -269,17 +357,48 @@ def random_candidate_edges(graph, count, seed_offset):
     return edges[: min(count, len(edges))]
 
 
-def candidate_edges(graph, top_k, random_candidate_count=0, bridge_top_k=0, seed_offset=0):
+def candidate_edges(
+    graph,
+    top_k,
+    random_candidate_count=0,
+    bridge_top_k=0,
+    seed_offset=0,
+    candidate_sources=None,
+    sampled_eb_k=16,
+    stale_eb_edges=None,
+):
+    if candidate_sources is None:
+        candidate_sources = ALL_CANDIDATE_SOURCES
+    candidate_sources = set(candidate_sources)
     h_graph = largest_cc_subgraph(graph)
-    source_edges = {
-        "m2": top_degree_product_edges(h_graph, top_k),
-        "m4": top_community_edges(h_graph, top_k, "m4"),
-        "m5": top_betweenness_edges(h_graph, top_k),
-        "m7": top_community_edges(h_graph, top_k, "m7"),
-        "m8": top_community_edges(h_graph, top_k, "m8"),
-        "bridge": top_bridge_edges(h_graph, bridge_top_k),
-        "random": random_candidate_edges(h_graph, random_candidate_count, seed_offset),
-    }
+    source_edges = {}
+    if "m2" in candidate_sources:
+        source_edges["m2"] = top_degree_product_edges(h_graph, top_k)
+    if "m4" in candidate_sources:
+        source_edges["m4"] = top_community_edges(h_graph, top_k, "m4")
+    if "m5" in candidate_sources:
+        source_edges["m5"] = top_betweenness_edges(h_graph, top_k)
+    if "sampled_eb" in candidate_sources:
+        source_edges["sampled_eb"] = top_sampled_betweenness_edges(
+            h_graph, top_k, sampled_eb_k, seed_offset
+        )
+    if "stale_eb" in candidate_sources:
+        if stale_eb_edges is None:
+            source_edges["stale_eb"] = top_betweenness_edges(h_graph, top_k)
+        else:
+            source_edges["stale_eb"] = [
+                edge for edge in stale_eb_edges if h_graph.has_edge(*edge)
+            ][:top_k]
+    if "m7" in candidate_sources:
+        source_edges["m7"] = top_community_edges(h_graph, top_k, "m7")
+    if "m8" in candidate_sources:
+        source_edges["m8"] = top_community_edges(h_graph, top_k, "m8")
+    if "path_bridge" in candidate_sources:
+        source_edges["path_bridge"] = top_path_bridge_edges(h_graph, bridge_top_k)
+    if "bridge" in candidate_sources:
+        source_edges["bridge"] = top_bridge_edges(h_graph, bridge_top_k)
+    if "random" in candidate_sources:
+        source_edges["random"] = random_candidate_edges(h_graph, random_candidate_count, seed_offset)
     edge_info = {}
     for source, edges in source_edges.items():
         for rank, edge in enumerate(edges, start=1):
@@ -300,6 +419,8 @@ def dynamic_features_for_candidates(
     top_k=5,
     random_candidate_count=0,
     bridge_top_k=0,
+    candidate_sources=None,
+    sampled_eb_k=16,
     compute_target=True,
 ):
     if not edge_info:
@@ -342,6 +463,8 @@ def dynamic_features_for_candidates(
                 random_candidate_count,
                 bridge_top_k,
                 seed_offset=step * 1009 + u * 9176 + v,
+                candidate_sources=candidate_sources,
+                sampled_eb_k=sampled_eb_k,
             )
         else:
             target_delta = 0.0
@@ -350,6 +473,7 @@ def dynamic_features_for_candidates(
             "split": meta["split"],
             "graph_id": meta["graph_id"],
             "graph_type": meta["graph_type"],
+            "community_strength": meta.get("community_strength", "unknown"),
             "step": step,
             "remove_ratio": step / float(current_m + step),
             "u": u,
@@ -400,9 +524,6 @@ def dynamic_features_for_candidates(
 
 
 def choose_dynamic_edge(graph, method):
-    edges = candidate_edges(graph, 1)
-    if not edges:
-        return None
     if method == "M2 dynamic degree product":
         source = "m2"
     elif method == "M4 dynamic community internal / pair":
@@ -415,6 +536,9 @@ def choose_dynamic_edge(graph, method):
         source = "m8"
     else:
         raise ValueError(f"Unsupported method: {method}")
+    edges = candidate_edges(graph, 1, candidate_sources=[source])
+    if not edges:
+        return None
     for edge, info in edges.items():
         if source in info["sources"]:
             return edge
@@ -431,6 +555,9 @@ def collect_candidate_rows_for_graph(
     max_steps,
     max_remove_ratio,
     rollout_policy,
+    candidate_sources,
+    sampled_eb_k,
+    stale_eb_interval,
 ):
     graph = reconstruct_graph(group)
     original_n = graph.number_of_nodes()
@@ -439,21 +566,34 @@ def collect_candidate_rows_for_graph(
         "split": group["split"].iloc[0],
         "graph_id": group["graph_id"].iloc[0],
         "graph_type": group["graph_type"].iloc[0],
+        "community_strength": group["community_strength"].iloc[0]
+        if "community_strength" in group.columns
+        else "unknown",
     }
     rows = []
     step = 0
     rng = random.Random(SEED)
+    stale_eb_edges = None
     while graph.number_of_edges() > 0:
         if max_steps and step >= max_steps:
             break
         if max_remove_ratio and step / float(original_m) >= max_remove_ratio:
             break
+        if "stale_eb" in candidate_sources and (
+            stale_eb_edges is None
+            or stale_eb_interval <= 1
+            or step % stale_eb_interval == 0
+        ):
+            stale_eb_edges = top_betweenness_edges(largest_cc_subgraph(graph), top_k)
         edge_info = candidate_edges(
             graph,
             top_k,
             random_candidate_count=random_candidate_count,
             bridge_top_k=bridge_top_k,
             seed_offset=original_m * 1009 + step,
+            candidate_sources=candidate_sources,
+            sampled_eb_k=sampled_eb_k,
+            stale_eb_edges=stale_eb_edges,
         )
         rows.extend(
             dynamic_features_for_candidates(
@@ -467,6 +607,8 @@ def collect_candidate_rows_for_graph(
                 top_k=top_k,
                 random_candidate_count=random_candidate_count,
                 bridge_top_k=bridge_top_k,
+                candidate_sources=candidate_sources,
+                sampled_eb_k=sampled_eb_k,
                 compute_target=True,
             )
         )
@@ -507,16 +649,22 @@ def build_candidate_dataset(
     max_steps,
     max_remove_ratio,
     max_graphs,
+    max_graphs_per_group,
     graph_ids,
     rollout_policy,
+    candidate_sources,
+    sampled_eb_k,
+    stale_eb_interval,
 ):
     frames = [read_split(name) for name in split_names]
     df = pd.concat(frames, ignore_index=True)
     if graph_ids:
         df = df[df["graph_id"].isin(graph_ids)].copy()
-    groups = list(df.groupby(["split", "graph_id"], sort=False))
-    if max_graphs:
-        groups = groups[:max_graphs]
+    groups = select_graph_groups(
+        df,
+        max_graphs=max_graphs,
+        max_graphs_per_group=max_graphs_per_group,
+    )
 
     rows = []
     for index, (_, group) in enumerate(groups, start=1):
@@ -533,6 +681,9 @@ def build_candidate_dataset(
                 max_steps=max_steps,
                 max_remove_ratio=max_remove_ratio,
                 rollout_policy=rollout_policy,
+                candidate_sources=candidate_sources,
+                sampled_eb_k=sampled_eb_k,
+                stale_eb_interval=stale_eb_interval,
             )
         )
     result = pd.DataFrame(rows)
@@ -547,7 +698,16 @@ def build_candidate_dataset(
 
 
 def feature_columns(df):
-    blocked = {"split", "graph_id", "graph_type", "u", "v", "gcc_delta", "damage_rank"}
+    blocked = {
+        "split",
+        "graph_id",
+        "graph_type",
+        "community_strength",
+        "u",
+        "v",
+        "gcc_delta",
+        "damage_rank",
+    }
     return [
         column
         for column in df.columns
@@ -555,7 +715,67 @@ def feature_columns(df):
     ]
 
 
-def train_model(train_df, feature_cols, model_type, max_iter):
+class PairwiseLogisticRanker:
+    def __init__(self, max_iter=500, max_pairs_per_state=32, min_delta=0.0, random_state=SEED):
+        self.max_pairs_per_state = max_pairs_per_state
+        self.min_delta = min_delta
+        self.random_state = random_state
+        self.model = Pipeline(
+            [
+                ("scaler", StandardScaler()),
+                (
+                    "logistic",
+                    LogisticRegression(
+                        max_iter=max_iter,
+                        class_weight="balanced",
+                        random_state=random_state,
+                    ),
+                ),
+            ]
+        )
+
+    def fit(self, df, feature_cols):
+        x_rows = []
+        y_rows = []
+        rng = random.Random(self.random_state)
+        state_cols = ["split", "graph_id", "step"]
+        for _, group in df.groupby(state_cols, sort=False):
+            if len(group) <= 1:
+                continue
+            values = group[feature_cols].values
+            labels = group["gcc_delta"].values
+            pairs = [
+                (i, j)
+                for i in range(len(group))
+                for j in range(i + 1, len(group))
+                if abs(labels[i] - labels[j]) > self.min_delta
+            ]
+            if self.max_pairs_per_state and len(pairs) > self.max_pairs_per_state:
+                pairs = rng.sample(pairs, self.max_pairs_per_state)
+            for i, j in pairs:
+                label = 1 if labels[i] > labels[j] else 0
+                diff = values[i] - values[j]
+                x_rows.append(diff)
+                y_rows.append(label)
+                x_rows.append(-diff)
+                y_rows.append(1 - label)
+        if not x_rows:
+            raise RuntimeError("No pairwise ranking examples were generated.")
+        self.model.fit(np.asarray(x_rows), np.asarray(y_rows))
+        return self
+
+    def predict(self, values):
+        return self.model.decision_function(values)
+
+
+def train_model(
+    train_df,
+    feature_cols,
+    model_type,
+    max_iter,
+    pairwise_max_pairs_per_state=32,
+    pairwise_min_delta=0.0,
+):
     if model_type == "mlp":
         model = Pipeline(
             [
@@ -591,11 +811,21 @@ def train_model(train_df, feature_cols, model_type, max_iter):
             max_depth=3,
             random_state=SEED,
         )
+    elif model_type == "pairwise_logistic":
+        model = PairwiseLogisticRanker(
+            max_iter=max_iter,
+            max_pairs_per_state=pairwise_max_pairs_per_state,
+            min_delta=pairwise_min_delta,
+            random_state=SEED,
+        )
     else:
         raise ValueError(f"Unsupported model type: {model_type}")
     with warnings.catch_warnings():
         warnings.simplefilter("ignore", ConvergenceWarning)
-        model.fit(train_df[feature_cols].values, train_df["gcc_delta"].values)
+        if model_type == "pairwise_logistic":
+            model.fit(train_df, feature_cols)
+        else:
+            model.fit(train_df[feature_cols].values, train_df["gcc_delta"].values)
     return model
 
 
@@ -645,6 +875,9 @@ def attack_curve_for_model(
     bridge_top_k,
     max_attack_steps,
     attack_max_remove_ratio,
+    candidate_sources,
+    sampled_eb_k,
+    stale_eb_interval,
 ):
     graph = reconstruct_graph(group)
     original_n = graph.number_of_nodes()
@@ -653,18 +886,31 @@ def attack_curve_for_model(
         "split": group["split"].iloc[0],
         "graph_id": group["graph_id"].iloc[0],
         "graph_type": group["graph_type"].iloc[0],
+        "community_strength": group["community_strength"].iloc[0]
+        if "community_strength" in group.columns
+        else "unknown",
     }
     rows = [curve_row(meta, "Candidate damage predictor", 0, original_m, gcc_ratio(graph, original_n))]
     step = 0
+    stale_eb_edges = None
     while graph.number_of_edges() > 0 and not should_stop_attack(
         step, original_m, max_attack_steps, attack_max_remove_ratio
     ):
+        if "stale_eb" in candidate_sources and (
+            stale_eb_edges is None
+            or stale_eb_interval <= 1
+            or step % stale_eb_interval == 0
+        ):
+            stale_eb_edges = top_betweenness_edges(largest_cc_subgraph(graph), top_k)
         edge_info = candidate_edges(
             graph,
             top_k,
             random_candidate_count=random_candidate_count,
             bridge_top_k=bridge_top_k,
             seed_offset=original_m * 1009 + step,
+            candidate_sources=candidate_sources,
+            sampled_eb_k=sampled_eb_k,
+            stale_eb_edges=stale_eb_edges,
         )
         candidate_rows = dynamic_features_for_candidates(
             graph,
@@ -675,6 +921,8 @@ def attack_curve_for_model(
             top_k=top_k,
             random_candidate_count=random_candidate_count,
             bridge_top_k=bridge_top_k,
+            candidate_sources=candidate_sources,
+            sampled_eb_k=sampled_eb_k,
             compute_target=False,
         )
         if not candidate_rows:
@@ -699,6 +947,9 @@ def dynamic_attack_curve(group, method, max_attack_steps, attack_max_remove_rati
         "split": group["split"].iloc[0],
         "graph_id": group["graph_id"].iloc[0],
         "graph_type": group["graph_type"].iloc[0],
+        "community_strength": group["community_strength"].iloc[0]
+        if "community_strength" in group.columns
+        else "unknown",
     }
     rows = [curve_row(meta, method, 0, original_m, gcc_ratio(graph, original_n))]
     step = 0
@@ -719,6 +970,7 @@ def curve_row(meta, method, step, original_m, ratio):
         "split": meta["split"],
         "graph_id": meta["graph_id"],
         "graph_type": meta["graph_type"],
+        "community_strength": meta.get("community_strength", "unknown"),
         "method": method,
         "removed_edges": step,
         "remove_ratio": step / float(original_m),
@@ -733,16 +985,29 @@ def threshold_remove_ratio(curve_df, threshold):
     return float(reached["remove_ratio"].iloc[0])
 
 
-def summarize_curve(curve_df):
+def summarize_curve(curve_df, elapsed_seconds=None):
     x = curve_df["remove_ratio"].values
     y = curve_df["gcc_ratio"].values
+    auc = float(np.trapz(y, x))
+    observed_remove_ratio = float(x[-1]) if len(x) else 0.0
+    normalized_auc = auc / observed_remove_ratio if observed_remove_ratio > 0 else np.nan
     row = {
         "split": curve_df["split"].iloc[0],
         "graph_id": curve_df["graph_id"].iloc[0],
         "graph_type": curve_df["graph_type"].iloc[0],
+        "community_strength": curve_df["community_strength"].iloc[0]
+        if "community_strength" in curve_df.columns
+        else "unknown",
         "method": curve_df["method"].iloc[0],
-        "auc": float(np.trapz(y, x)),
+        "auc": auc,
+        "normalized_auc": normalized_auc,
+        "robustness_index": normalized_auc,
+        "observed_remove_ratio": observed_remove_ratio,
+        "final_gcc_ratio": float(y[-1]) if len(y) else np.nan,
+        "num_steps": int(curve_df["removed_edges"].max()),
     }
+    if elapsed_seconds is not None:
+        row["elapsed_seconds"] = float(elapsed_seconds)
     for threshold in THRESHOLDS:
         column = "remove_ratio_gcc_le_" + str(threshold).replace(".", "_")
         row[column] = threshold_remove_ratio(curve_df, threshold)
@@ -758,23 +1023,30 @@ def evaluate_attack_curves(
     bridge_top_k,
     attack_splits,
     max_eval_graphs,
+    max_eval_graphs_per_group,
     graph_ids,
     skip_baselines,
     max_attack_steps,
     attack_max_remove_ratio,
+    candidate_sources,
+    sampled_eb_k,
+    stale_eb_interval,
 ):
     df = eval_df[eval_df["split"].isin(attack_splits)].copy()
     if graph_ids:
         df = df[df["graph_id"].isin(graph_ids)].copy()
-    groups = list(df.groupby(["split", "graph_id"], sort=False))
-    if max_eval_graphs:
-        groups = groups[:max_eval_graphs]
+    groups = select_graph_groups(
+        df,
+        max_graphs=max_eval_graphs,
+        max_graphs_per_group=max_eval_graphs_per_group,
+    )
 
     curve_rows = []
     summary_rows = []
     for index, (_, group) in enumerate(groups, start=1):
         label = f"{group['split'].iloc[0]}/{group['graph_id'].iloc[0]}"
         print(f"[attack {index:03d}/{len(groups):03d}] {label}", flush=True)
+        start_time = time.perf_counter()
         rows = attack_curve_for_model(
             group,
             model,
@@ -784,16 +1056,22 @@ def evaluate_attack_curves(
             bridge_top_k,
             max_attack_steps,
             attack_max_remove_ratio,
+            candidate_sources,
+            sampled_eb_k,
+            stale_eb_interval,
         )
+        elapsed_seconds = time.perf_counter() - start_time
         curve_rows.extend(rows)
-        summary_rows.append(summarize_curve(pd.DataFrame(rows)))
+        summary_rows.append(summarize_curve(pd.DataFrame(rows), elapsed_seconds))
         if not skip_baselines:
             for method in BASELINE_METHODS:
+                start_time = time.perf_counter()
                 baseline_rows = dynamic_attack_curve(
                     group, method, max_attack_steps, attack_max_remove_ratio
                 )
+                elapsed_seconds = time.perf_counter() - start_time
                 curve_rows.extend(baseline_rows)
-                summary_rows.append(summarize_curve(pd.DataFrame(baseline_rows)))
+                summary_rows.append(summarize_curve(pd.DataFrame(baseline_rows), elapsed_seconds))
     return pd.DataFrame(curve_rows), pd.DataFrame(summary_rows)
 
 
@@ -807,7 +1085,15 @@ def aggregate_summary(summary_df):
             "mean_auc": group["auc"].mean(),
             "median_auc": group["auc"].median(),
             "std_auc": group["auc"].std(),
+            "mean_normalized_auc": group["normalized_auc"].mean(),
+            "median_normalized_auc": group["normalized_auc"].median(),
+            "mean_robustness_index": group["robustness_index"].mean(),
+            "mean_observed_remove_ratio": group["observed_remove_ratio"].mean(),
+            "mean_final_gcc_ratio": group["final_gcc_ratio"].mean(),
+            "mean_num_steps": group["num_steps"].mean(),
         }
+        if "elapsed_seconds" in group:
+            row["mean_elapsed_seconds"] = group["elapsed_seconds"].mean()
         for threshold in THRESHOLDS:
             column = "remove_ratio_gcc_le_" + str(threshold).replace(".", "_")
             row[f"mean_{column}"] = group[column].mean()
@@ -873,6 +1159,14 @@ def write_notes(aggregate_df, candidate_aggregate_df, args):
         f"- top_k={args.top_k}",
         f"- random_candidate_count={args.random_candidates}",
         f"- bridge_top_k={args.bridge_top_k}",
+        f"- candidate_sources={args.candidate_sources}",
+        f"- train_candidate_sources={args.train_candidate_sources or args.candidate_sources}",
+        f"- eval_candidate_sources={args.eval_candidate_sources or args.candidate_sources}",
+        f"- attack_candidate_sources={args.attack_candidate_sources or args.candidate_sources}",
+        f"- sampled_eb_k={args.sampled_eb_k}",
+        f"- stale_eb_interval={args.stale_eb_interval}",
+        f"- pairwise_max_pairs_per_state={args.pairwise_max_pairs_per_state}",
+        f"- pairwise_min_delta={args.pairwise_min_delta}",
         f"- damage_horizon={args.damage_horizon}",
         f"- damage_rollout_policy={args.damage_rollout_policy}",
         f"- rollout_policy={args.rollout_policy}",
@@ -903,6 +1197,7 @@ def write_notes(aggregate_df, candidate_aggregate_df, args):
 
 def parse_args():
     parser = argparse.ArgumentParser(description="Train a candidate-set damage predictor for edge attacks.")
+    parser.add_argument("--data-dir", default=str(DATA_DIR))
     parser.add_argument("--top-k", type=int, default=5)
     parser.add_argument(
         "--random-candidates",
@@ -916,14 +1211,74 @@ def parse_args():
         default=0,
         help="Number of bridge candidate edges to add at each state, ranked by degree product.",
     )
-    parser.add_argument("--model-type", choices=["mlp", "random_forest", "gbdt"], default="gbdt")
+    parser.add_argument(
+        "--candidate-sources",
+        default="m2,m4,m5,m7,m8,bridge,random",
+        help="Default comma-separated candidate sources selected from m2,m4,m5,sampled_eb,stale_eb,m7,m8,path_bridge,bridge,random.",
+    )
+    parser.add_argument(
+        "--train-candidate-sources",
+        default="",
+        help="Candidate sources for training rows. Defaults to --candidate-sources.",
+    )
+    parser.add_argument(
+        "--eval-candidate-sources",
+        default="",
+        help="Candidate sources for ranking evaluation rows. Defaults to --candidate-sources.",
+    )
+    parser.add_argument(
+        "--attack-candidate-sources",
+        default="",
+        help="Candidate sources used by the learned policy during dynamic attack. Defaults to --candidate-sources.",
+    )
+    parser.add_argument(
+        "--sampled-eb-k",
+        type=int,
+        default=16,
+        help="Number of source nodes sampled for sampled_eb candidate generation.",
+    )
+    parser.add_argument(
+        "--stale-eb-interval",
+        type=int,
+        default=10,
+        help="Recompute stale_eb candidates every N deletion steps; 1 matches fully dynamic EB candidates.",
+    )
+    parser.add_argument(
+        "--model-type",
+        choices=["mlp", "random_forest", "gbdt", "pairwise_logistic"],
+        default="gbdt",
+    )
     parser.add_argument("--max-iter", type=int, default=180)
+    parser.add_argument(
+        "--pairwise-max-pairs-per-state",
+        type=int,
+        default=32,
+        help="Maximum unordered candidate pairs sampled per state for pairwise_logistic.",
+    )
+    parser.add_argument(
+        "--pairwise-min-delta",
+        type=float,
+        default=0.0,
+        help="Minimum absolute damage difference needed to create a pairwise ranking example.",
+    )
     parser.add_argument("--train-splits", default="synthetic_train")
     parser.add_argument("--eval-splits", default="synthetic_val,synthetic_test,real_external_test")
     parser.add_argument("--attack-splits", default="synthetic_test,real_external_test")
     parser.add_argument("--graph-ids", default="")
     parser.add_argument("--max-train-graphs", type=int, default=0)
     parser.add_argument("--max-eval-graphs", type=int, default=0)
+    parser.add_argument(
+        "--max-train-graphs-per-group",
+        type=int,
+        default=0,
+        help="Limit training graphs per split/graph_type/community_strength group before the global cap.",
+    )
+    parser.add_argument(
+        "--max-eval-graphs-per-group",
+        type=int,
+        default=0,
+        help="Limit eval and attack graphs per split/graph_type/community_strength group before the global cap.",
+    )
     parser.add_argument("--max-train-steps", type=int, default=80)
     parser.add_argument("--max-attack-steps", type=int, default=0)
     parser.add_argument("--train-max-remove-ratio", type=float, default=0.35)
@@ -947,11 +1302,22 @@ def parse_args():
 
 
 def main():
-    global OUT_DIR
+    global DATA_DIR, OUT_DIR
     args = parse_args()
+    DATA_DIR = Path(args.data_dir)
     OUT_DIR = Path(args.out_dir)
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     graph_ids = set(parse_list(args.graph_ids))
+    candidate_sources = parse_candidate_sources(args.candidate_sources)
+    train_candidate_sources = parse_candidate_sources(
+        args.train_candidate_sources or args.candidate_sources
+    )
+    eval_candidate_sources = parse_candidate_sources(
+        args.eval_candidate_sources or args.candidate_sources
+    )
+    attack_candidate_sources = parse_candidate_sources(
+        args.attack_candidate_sources or args.candidate_sources
+    )
 
     train_candidate_df = build_candidate_dataset(
         parse_list(args.train_splits),
@@ -963,13 +1329,24 @@ def main():
         max_steps=args.max_train_steps,
         max_remove_ratio=args.train_max_remove_ratio,
         max_graphs=args.max_train_graphs,
+        max_graphs_per_group=args.max_train_graphs_per_group,
         graph_ids=graph_ids,
         rollout_policy=args.rollout_policy,
+        candidate_sources=train_candidate_sources,
+        sampled_eb_k=args.sampled_eb_k,
+        stale_eb_interval=args.stale_eb_interval,
     )
     if train_candidate_df.empty:
         raise RuntimeError("No candidate training rows were generated.")
     feature_cols = feature_columns(train_candidate_df)
-    model = train_model(train_candidate_df, feature_cols, args.model_type, args.max_iter)
+    model = train_model(
+        train_candidate_df,
+        feature_cols,
+        args.model_type,
+        args.max_iter,
+        pairwise_max_pairs_per_state=args.pairwise_max_pairs_per_state,
+        pairwise_min_delta=args.pairwise_min_delta,
+    )
 
     eval_candidate_df = build_candidate_dataset(
         parse_list(args.eval_splits),
@@ -981,8 +1358,12 @@ def main():
         max_steps=args.max_train_steps,
         max_remove_ratio=args.train_max_remove_ratio,
         max_graphs=args.max_eval_graphs,
+        max_graphs_per_group=args.max_eval_graphs_per_group,
         graph_ids=graph_ids,
         rollout_policy=args.rollout_policy,
+        candidate_sources=eval_candidate_sources,
+        sampled_eb_k=args.sampled_eb_k,
+        stale_eb_interval=args.stale_eb_interval,
     )
     candidate_metrics_df, eval_candidate_scored_df = evaluate_candidate_ranking(
         model, eval_candidate_df, feature_cols
@@ -1000,10 +1381,14 @@ def main():
         bridge_top_k=args.bridge_top_k,
         attack_splits=parse_list(args.attack_splits),
         max_eval_graphs=args.max_eval_graphs,
+        max_eval_graphs_per_group=args.max_eval_graphs_per_group,
         graph_ids=graph_ids,
         skip_baselines=args.skip_baselines,
         max_attack_steps=args.max_attack_steps,
         attack_max_remove_ratio=args.attack_max_remove_ratio,
+        candidate_sources=attack_candidate_sources,
+        sampled_eb_k=args.sampled_eb_k,
+        stale_eb_interval=args.stale_eb_interval,
     )
     aggregate_df = aggregate_summary(attack_summary_df)
 
@@ -1025,14 +1410,27 @@ def main():
                 "top_k": args.top_k,
                 "random_candidates": args.random_candidates,
                 "bridge_top_k": args.bridge_top_k,
+                "candidate_sources": candidate_sources,
+                "train_candidate_sources": train_candidate_sources,
+                "eval_candidate_sources": eval_candidate_sources,
+                "attack_candidate_sources": attack_candidate_sources,
+                "sampled_eb_k": args.sampled_eb_k,
+                "stale_eb_interval": args.stale_eb_interval,
                 "damage_horizon": args.damage_horizon,
                 "damage_rollout_policy": args.damage_rollout_policy,
                 "model_type": args.model_type,
+                "pairwise_max_pairs_per_state": args.pairwise_max_pairs_per_state,
+                "pairwise_min_delta": args.pairwise_min_delta,
             },
             handle,
         )
 
     config = vars(args).copy()
+    config["data_dir"] = str(DATA_DIR)
+    config["candidate_sources"] = candidate_sources
+    config["train_candidate_sources"] = train_candidate_sources
+    config["eval_candidate_sources"] = eval_candidate_sources
+    config["attack_candidate_sources"] = attack_candidate_sources
     config["feature_count"] = len(feature_cols)
     config["train_rows"] = len(train_candidate_df)
     config["eval_candidate_rows"] = len(eval_candidate_df)

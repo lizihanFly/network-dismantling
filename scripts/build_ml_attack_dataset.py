@@ -30,6 +30,15 @@ GRAPH_TYPE_WEIGHTS = [
     ("ws", 0.15),
     ("er", 0.15),
 ]
+BALANCED_SYNTHETIC_GROUPS = [
+    ("sbm", "strong"),
+    ("sbm", "medium"),
+    ("sbm", "weak"),
+    ("sbm", "mixed"),
+    ("ba", "none"),
+    ("er", "none"),
+    ("ws", "none"),
+]
 
 EDGE_FIELDNAMES = [
     "split",
@@ -114,12 +123,13 @@ def largest_connected_simple_graph(graph):
     return nx.convert_node_labels_to_integers(graph, ordering="sorted")
 
 
-def generate_sbm(rng, seed):
+def generate_sbm(rng, seed, strength=None):
     num_blocks = rng.choice([3, 4, 5, 6])
     block_size = rng.randint(22, 48)
     sizes = [block_size + rng.randint(-6, 6) for _ in range(num_blocks)]
     sizes = [max(14, size) for size in sizes]
-    strength = rng.choice(["strong", "medium", "weak", "mixed"])
+    if strength is None:
+        strength = rng.choice(["strong", "medium", "weak", "mixed"])
 
     if strength == "strong":
         p_in = rng.uniform(0.12, 0.20)
@@ -206,11 +216,31 @@ def make_graph_type_schedule(count, rng):
     return schedule
 
 
-def generate_one_synthetic_graph(graph_id, split, graph_type, rng):
+def make_balanced_graph_schedule(per_group, rng):
+    schedule = []
+    for graph_type, community_strength in BALANCED_SYNTHETIC_GROUPS:
+        for _ in range(per_group):
+            schedule.append(
+                {
+                    "graph_type": graph_type,
+                    "community_strength": community_strength,
+                }
+            )
+    rng.shuffle(schedule)
+    return schedule
+
+
+def graph_id_prefix(graph_type, community_strength):
+    if graph_type == "sbm":
+        return f"sbm_{community_strength}"
+    return graph_type
+
+
+def generate_one_synthetic_graph(graph_id, split, graph_type, rng, community_strength=None):
     for attempt in range(20):
         seed = rng.randint(0, 2**31 - 1)
         if graph_type == "sbm":
-            graph = generate_sbm(rng, seed)
+            graph = generate_sbm(rng, seed, community_strength)
         elif graph_type == "ba":
             graph = generate_ba(rng, seed)
         elif graph_type == "ws":
@@ -486,30 +516,90 @@ def write_graph_gml(graph, graph_path):
     nx.write_gml(clean_graph, graph_path)
 
 
-def build_dataset(num_synthetic, seed):
+def display_path(path):
+    try:
+        return str(path.relative_to(ROOT))
+    except ValueError:
+        return str(path)
+
+
+def build_dataset(
+    num_synthetic,
+    seed,
+    out_dir,
+    overwrite=False,
+    synthetic_mode="weighted",
+    balanced_train_per_group=30,
+    balanced_val_per_group=6,
+    balanced_test_per_group=30,
+):
     rng = random.Random(seed)
     total_default = sum(SPLIT_COUNTS.values())
-    if num_synthetic != total_default:
+    split_counts = dict(SPLIT_COUNTS)
+    balanced_per_group = {}
+    if synthetic_mode == "balanced":
+        if min(balanced_train_per_group, balanced_val_per_group, balanced_test_per_group) < 0:
+            raise ValueError("Balanced per-group counts must be non-negative.")
+        balanced_per_group = {
+            "train": balanced_train_per_group,
+            "val": balanced_val_per_group,
+            "synthetic_test": balanced_test_per_group,
+        }
+        split_counts = {
+            split: per_group * len(BALANCED_SYNTHETIC_GROUPS)
+            for split, per_group in balanced_per_group.items()
+        }
+        num_synthetic = sum(split_counts.values())
+    elif num_synthetic != total_default:
         train_count = int(math.floor(num_synthetic * 0.70))
         val_count = int(math.floor(num_synthetic * 0.15))
-        SPLIT_COUNTS["train"] = train_count
-        SPLIT_COUNTS["val"] = val_count
-        SPLIT_COUNTS["synthetic_test"] = num_synthetic - train_count - val_count
+        split_counts["train"] = train_count
+        split_counts["val"] = val_count
+        split_counts["synthetic_test"] = num_synthetic - train_count - val_count
+    elif synthetic_mode != "weighted":
+        raise ValueError(f"Unsupported synthetic mode: {synthetic_mode}")
 
-    OUT_DIR.mkdir(parents=True, exist_ok=True)
-    if SYN_GRAPH_DIR.exists():
-        shutil.rmtree(SYN_GRAPH_DIR)
-    SYN_GRAPH_DIR.mkdir(parents=True, exist_ok=True)
+    out_dir = Path(out_dir)
+    syn_graph_dir = out_dir / "synthetic_graphs"
+    if out_dir.exists() and any(out_dir.iterdir()) and not overwrite:
+        raise FileExistsError(
+            f"Output directory is not empty: {out_dir}. "
+            "Use a new --out-dir, or pass --overwrite intentionally."
+        )
+    out_dir.mkdir(parents=True, exist_ok=True)
+    if syn_graph_dir.exists():
+        shutil.rmtree(syn_graph_dir)
+    syn_graph_dir.mkdir(parents=True, exist_ok=True)
 
     synthetic_graphs = []
-    for split, count in SPLIT_COUNTS.items():
-        graph_type_schedule = make_graph_type_schedule(count, rng)
-        for idx, graph_type in enumerate(graph_type_schedule):
-            graph_id = f"{split}_{idx:03d}"
-            graph = generate_one_synthetic_graph(graph_id, split, graph_type, rng)
-            graph_path = SYN_GRAPH_DIR / split / f"{graph_id}_{graph.graph['graph_type']}.gml"
+    for split, count in split_counts.items():
+        if synthetic_mode == "balanced":
+            graph_schedule = make_balanced_graph_schedule(balanced_per_group[split], rng)
+        else:
+            graph_schedule = [
+                {"graph_type": graph_type, "community_strength": None}
+                for graph_type in make_graph_type_schedule(count, rng)
+            ]
+        group_counts = {}
+        for idx, item in enumerate(graph_schedule):
+            graph_type = item["graph_type"]
+            community_strength = item["community_strength"]
+            if synthetic_mode == "balanced":
+                prefix = graph_id_prefix(graph_type, community_strength)
+                group_counts[prefix] = group_counts.get(prefix, 0) + 1
+                graph_id = f"{split}_{prefix}_{group_counts[prefix] - 1:03d}"
+            else:
+                graph_id = f"{split}_{idx:03d}"
+            graph = generate_one_synthetic_graph(
+                graph_id,
+                split,
+                graph_type,
+                rng,
+                community_strength=community_strength,
+            )
+            graph_path = syn_graph_dir / split / f"{graph_id}_{graph.graph['graph_type']}.gml"
             graph_path.parent.mkdir(parents=True, exist_ok=True)
-            graph.graph["graph_path"] = str(graph_path.relative_to(ROOT))
+            graph.graph["graph_path"] = display_path(graph_path)
             write_graph_gml(graph, graph_path)
             synthetic_graphs.append(graph)
 
@@ -528,37 +618,43 @@ def build_dataset(num_synthetic, seed):
         edge_rows.extend(rows)
         graph_rows.append(metadata)
 
-    write_csv(OUT_DIR / "edge_features_all.csv", edge_rows, EDGE_FIELDNAMES)
+    write_csv(out_dir / "edge_features_all.csv", edge_rows, EDGE_FIELDNAMES)
     write_csv(
-        OUT_DIR / "edge_features_synthetic_train.csv",
+        out_dir / "edge_features_synthetic_train.csv",
         [row for row in edge_rows if row["split"] == "train"],
         EDGE_FIELDNAMES,
     )
     write_csv(
-        OUT_DIR / "edge_features_synthetic_val.csv",
+        out_dir / "edge_features_synthetic_val.csv",
         [row for row in edge_rows if row["split"] == "val"],
         EDGE_FIELDNAMES,
     )
     write_csv(
-        OUT_DIR / "edge_features_synthetic_test.csv",
+        out_dir / "edge_features_synthetic_test.csv",
         [row for row in edge_rows if row["split"] == "synthetic_test"],
         EDGE_FIELDNAMES,
     )
     write_csv(
-        OUT_DIR / "edge_features_real_external_test.csv",
+        out_dir / "edge_features_real_external_test.csv",
         [row for row in edge_rows if row["split"] == "real_external_test"],
         EDGE_FIELDNAMES,
     )
-    write_csv(OUT_DIR / "graph_metadata.csv", graph_rows, META_FIELDNAMES)
+    write_csv(out_dir / "graph_metadata.csv", graph_rows, META_FIELDNAMES)
 
     manifest = {
         "seed": seed,
+        "synthetic_mode": synthetic_mode,
         "synthetic_graph_count": len(synthetic_graphs),
         "real_external_test_graph_count": len(real_graphs),
-        "split_counts": SPLIT_COUNTS,
+        "split_counts": split_counts,
+        "balanced_groups": [
+            {"graph_type": graph_type, "community_strength": community_strength}
+            for graph_type, community_strength in BALANCED_SYNTHETIC_GROUPS
+        ] if synthetic_mode == "balanced" else [],
+        "balanced_per_group": balanced_per_group,
         "edge_feature_rows": len(edge_rows),
-        "feature_file": str((OUT_DIR / "edge_features_all.csv").relative_to(ROOT)),
-        "graph_metadata_file": str((OUT_DIR / "graph_metadata.csv").relative_to(ROOT)),
+        "feature_file": display_path(out_dir / "edge_features_all.csv"),
+        "graph_metadata_file": display_path(out_dir / "graph_metadata.csv"),
         "labels": {
             "edge_betweenness": "M5 teacher score; higher means more central edge.",
             "edge_betweenness_rank_pct": "0 is top-ranked by M5 within the graph.",
@@ -567,7 +663,7 @@ def build_dataset(num_synthetic, seed):
         },
         "note": "Use only split=train/val/synthetic_test for model development; keep real_external_test as external benchmark.",
     }
-    (OUT_DIR / "manifest.json").write_text(
+    (out_dir / "manifest.json").write_text(
         json.dumps(manifest, indent=2, ensure_ascii=False) + "\n", encoding="utf-8"
     )
     return manifest
@@ -579,12 +675,32 @@ def parse_args():
     )
     parser.add_argument("--num-synthetic", type=int, default=sum(SPLIT_COUNTS.values()))
     parser.add_argument("--seed", type=int, default=SEED)
+    parser.add_argument("--out-dir", default=str(OUT_DIR))
+    parser.add_argument("--overwrite", action="store_true")
+    parser.add_argument(
+        "--synthetic-mode",
+        choices=["weighted", "balanced"],
+        default="weighted",
+        help="weighted keeps the original random graph-type mix; balanced creates equal counts for SBM strengths and BA/ER/WS controls.",
+    )
+    parser.add_argument("--balanced-train-per-group", type=int, default=30)
+    parser.add_argument("--balanced-val-per-group", type=int, default=6)
+    parser.add_argument("--balanced-test-per-group", type=int, default=30)
     return parser.parse_args()
 
 
 def main():
     args = parse_args()
-    manifest = build_dataset(args.num_synthetic, args.seed)
+    manifest = build_dataset(
+        args.num_synthetic,
+        args.seed,
+        args.out_dir,
+        overwrite=args.overwrite,
+        synthetic_mode=args.synthetic_mode,
+        balanced_train_per_group=args.balanced_train_per_group,
+        balanced_val_per_group=args.balanced_val_per_group,
+        balanced_test_per_group=args.balanced_test_per_group,
+    )
     print(json.dumps(manifest, indent=2, ensure_ascii=False))
 
 
