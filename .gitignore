@@ -11,12 +11,41 @@
 .cursor/
 **/__pycache__/
 *.pyc
+debug.log
+.claude/
+.vscode/
+experiments/
+results/
 
 # Generated synthetic datasets and experiment artifacts can be large.
 # Keep curated summaries in docs/ instead of committing raw run outputs by default.
 data/ml_attack_dataset_*/
+data/realnetworks_40plus/
+result/**
+!result/
+!result/paper_experiments/
+!result/paper_experiments/*.md
+!result/sasb_m5_edge_diagnostics/
+!result/sasb_m5_edge_diagnostics/*.md
+!result/sasb_m5_edge_diagnostics/why_sasb_wins_or_loses/
+!result/sasb_m5_edge_diagnostics/why_sasb_wins_or_loses/*.csv
+!result/sasb_m5_edge_diagnostics/why_sasb_wins_or_loses/*.png
+!result/sasb_m5_edge_diagnostics/adaptive_sasb_smoke_20260707_162049/
+result/sasb_m5_edge_diagnostics/adaptive_sasb_smoke_20260707_162049/*
+!result/sasb_m5_edge_diagnostics/adaptive_sasb_smoke_20260707_162049/per_graph_method_summary.csv
+!result/sasb_m5_edge_diagnostics/adaptive_sasb_smoke_20260707_162049/method_average_summary.csv
+!result/sasb_m5_edge_diagnostics/adaptive_sasb_smoke_20260707_162049/summary_with_m5_baseline.csv
+!result/sasb_m5_edge_diagnostics/adaptive_sasb_smoke_20260707_162049/adaptive_vs_fixed_auc_delta.csv
+!result/sasb_m5_edge_diagnostics/adaptive_sasb_smoke_20260707_162049/source_composition_summary.csv
+!result/sasb_m5_edge_diagnostics/adaptive_sasb_smoke_20260707_162049/bridge_selection_corrected_by_phase.csv
+!result/sasb_m5_edge_diagnostics/adaptive_sasb_smoke_20260707_162049/bridge_selection_full_order_invariant_check.csv
+!result/sasb_m5_edge_diagnostics/adaptive_sasb_smoke_20260707_162049/selected_smoke_graphs.csv
+!result/sasb_m5_edge_diagnostics/adaptive_sasb_smoke_20260707_162049/run_config.json
+!result/sasb_m5_edge_diagnostics/adaptive_sasb_smoke_20260707_162049/plots/
+!result/sasb_m5_edge_diagnostics/adaptive_sasb_smoke_20260707_162049/plots/*.png
 result/candidate_damage_*/
 result/direction1_2_*/
 result/stale_eb_path_bridge_smoke/
 result/expanded_candidate_oracle/
+result/heuristic_m*/
 

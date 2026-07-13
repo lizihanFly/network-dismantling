@@ -1,0 +1,19 @@
+﻿outcome_class,method,attack_phase,graphs,mean_phase_normalized_auc
+SASB better than M5,M5,early,7,0.5057867348328358
+SASB better than M5,M5,late,7,0.02871673514002505
+SASB better than M5,M5,middle,7,0.09726137345176221
+SASB better than M5,SASB,early,7,0.5117346384164133
+SASB better than M5,SASB,late,7,0.019766568309813732
+SASB better than M5,SASB,middle,7,0.0818291559061353
+SASB worse than M5,M5,early,16,0.3909706045204824
+SASB worse than M5,M5,late,16,0.06553185188686547
+SASB worse than M5,M5,middle,16,0.1611393101565788
+SASB worse than M5,SASB,early,16,0.4543880975980928
+SASB worse than M5,SASB,late,16,0.05306488283663041
+SASB worse than M5,SASB,middle,16,0.18477853023211982
+tie / close,M5,early,1,0.3402777777777778
+tie / close,M5,late,1,0.02243589743589744
+tie / close,M5,middle,1,0.04767628205128205
+tie / close,SASB,early,1,0.3402777777777778
+tie / close,SASB,late,1,0.02243589743589744
+tie / close,SASB,middle,1,0.04767628205128205

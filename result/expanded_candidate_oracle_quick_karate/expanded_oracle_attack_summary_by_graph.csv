@@ -1,2 +1,0 @@
-﻿auc,graph_id,graph_type,method,remove_ratio_gcc_le_0_1,remove_ratio_gcc_le_0_2,remove_ratio_gcc_le_0_5,split
-0.37311463046757165,karate,real,Expanded oracle top-5 h1,0.8333333333333334,0.5769230769230769,0.20512820512820512,real_external_test

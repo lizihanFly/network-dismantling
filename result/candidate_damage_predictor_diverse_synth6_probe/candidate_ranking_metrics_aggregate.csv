@@ -1,2 +1,0 @@
-﻿mean_candidate_count,mean_chosen_delta_ratio,mean_kendall,mean_mae,mean_rmse,mean_spearman,mean_top1_hit,num_states,split
-27.261111111111113,1.0,0.2948626527015923,6.162710982683465e-05,0.00015585127409192544,0.298163121442384,1.0,180,synthetic_test

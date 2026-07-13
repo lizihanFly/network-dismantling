@@ -1,2 +1,0 @@
-﻿mean_auc,mean_remove_ratio_gcc_le_0_1,mean_remove_ratio_gcc_le_0_2,mean_remove_ratio_gcc_le_0_5,median_auc,method,num_graphs,split,std_auc
-0.22502305128023264,0.43882544861337686,0.2838499184339315,0.15497553017944535,0.22502305128023264,Expanded oracle top-5 h1,1,real_external_test,

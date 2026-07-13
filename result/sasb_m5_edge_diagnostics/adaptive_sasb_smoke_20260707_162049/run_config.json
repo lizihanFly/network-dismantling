@@ -1,0 +1,19 @@
+{
+  "graph_ids": [
+    "football",
+    "bio_diseasome",
+    "bio_celegansneural",
+    "soc_wiki_vote",
+    "ca_csphd",
+    "bio_grid_mouse",
+    "rt_twitter_copen",
+    "inf_power"
+  ],
+  "methods": [
+    "SASB-k32",
+    "SASB-k64",
+    "Adaptive-SASB"
+  ],
+  "max_remove_ratio": 1.0,
+  "max_steps": 120
+}
