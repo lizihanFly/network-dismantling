@@ -1,0 +1,44 @@
+﻿row_type,outcome_class,metric,value
+outcome_group,SASB better than M5,graph_count,7.0
+outcome_group,SASB better than M5,bridge_ratio,0.030677385838738802
+outcome_group,SASB better than M5,core2_size_ratio,0.9029223297314503
+outcome_group,SASB better than M5,degree_cv,0.795607965409255
+outcome_group,SASB better than M5,modularity,0.5692957858918006
+outcome_group,SASB better than M5,clustering_coefficient,0.37059487335673724
+outcome_group,SASB better than M5,average_edge_embeddedness,0.4479238759346415
+outcome_group,SASB better than M5,inter_community_edge_ratio,0.2010577928969129
+outcome_group,SASB better than M5,average_degree,9.729883022822374
+outcome_group,SASB better than M5,num_nodes,500.42857142857144
+outcome_group,SASB better than M5,num_edges,2243.1428571428573
+outcome_group,SASB worse than M5,graph_count,16.0
+outcome_group,SASB worse than M5,bridge_ratio,0.17750771927401107
+outcome_group,SASB worse than M5,core2_size_ratio,0.7332214274192952
+outcome_group,SASB worse than M5,degree_cv,1.178243103116828
+outcome_group,SASB worse than M5,modularity,0.5782188009105357
+outcome_group,SASB worse than M5,clustering_coefficient,0.38962071444889834
+outcome_group,SASB worse than M5,average_edge_embeddedness,0.474390277628938
+outcome_group,SASB worse than M5,inter_community_edge_ratio,0.1695678043767726
+outcome_group,SASB worse than M5,average_degree,13.298517667013748
+outcome_group,SASB worse than M5,num_nodes,970.5625
+outcome_group,SASB worse than M5,num_edges,2340.9375
+outcome_group,tie / close,graph_count,1.0
+outcome_group,tie / close,bridge_ratio,0.5299145299145299
+outcome_group,tie / close,core2_size_ratio,0.3541666666666667
+outcome_group,tie / close,degree_cv,1.0539885943622933
+outcome_group,tie / close,modularity,0.6793045510994229
+outcome_group,tie / close,clustering_coefficient,0.0607499628639334
+outcome_group,tie / close,average_edge_embeddedness,0.1243386243386243
+outcome_group,tie / close,inter_community_edge_ratio,0.1794871794871795
+outcome_group,tie / close,average_degree,2.4375
+outcome_group,tie / close,num_nodes,96.0
+outcome_group,tie / close,num_edges,117.0
+spearman_correlation,all,bridge_ratio_vs_sasb_minus_m5_normalized_auc,0.02870813668708751
+spearman_correlation,all,core2_size_ratio_vs_sasb_minus_m5_normalized_auc,-0.09047412774112427
+spearman_correlation,all,degree_cv_vs_sasb_minus_m5_normalized_auc,0.18395303761670867
+spearman_correlation,all,modularity_vs_sasb_minus_m5_normalized_auc,-0.20347826086956516
+spearman_correlation,all,clustering_coefficient_vs_sasb_minus_m5_normalized_auc,0.09217391304347824
+spearman_correlation,all,average_edge_embeddedness_vs_sasb_minus_m5_normalized_auc,0.13999999999999999
+spearman_correlation,all,inter_community_edge_ratio_vs_sasb_minus_m5_normalized_auc,0.13826086956521738
+spearman_correlation,all,average_degree_vs_sasb_minus_m5_normalized_auc,0.006523157362294634
+spearman_correlation,all,num_nodes_vs_sasb_minus_m5_normalized_auc,-0.0778430111900493
+spearman_correlation,all,num_edges_vs_sasb_minus_m5_normalized_auc,-0.0004348771574863089
