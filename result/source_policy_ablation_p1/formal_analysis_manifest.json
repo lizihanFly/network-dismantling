@@ -1,0 +1,15 @@
+{
+  "formal_results_rows": 207,
+  "paired_comparisons_rows": 207,
+  "effect_sizes_rows": 6,
+  "mechanism_summary_rows": 72,
+  "cost_summary_rows": 36,
+  "plots": [
+    "mechanism_vs_auc_diff.png",
+    "realworld_completed_auc_boxplot.png",
+    "realworld_completed_structured_minus_matched_auc_diff.png",
+    "runtime_by_source_policy.png",
+    "synthetic45_auc_boxplot.png",
+    "synthetic45_structured_minus_matched_auc_diff.png"
+  ]
+}

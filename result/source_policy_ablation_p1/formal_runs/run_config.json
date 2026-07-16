@@ -1,0 +1,117 @@
+{
+  "experiment_name": "p1_source_policy_ablation",
+  "run_enabled_by_default": false,
+  "output_dir": "result\\source_policy_ablation_p1\\formal_runs",
+  "seed": 20260513,
+  "random_seeds": [
+    20260513
+  ],
+  "source_budget": 32,
+  "remove_ratio": 1.0,
+  "methods": [
+    "SASB-structured",
+    "SASB-random",
+    "SASB-matched"
+  ],
+  "candidate_set": {
+    "backend": "evaluate_m19_theory_calibrated.candidate_features",
+    "variant": "conservative",
+    "delta_mode": "none",
+    "k_min": 64,
+    "k_max": 512,
+    "candidate_set_must_match_across_source_policies_for_same_graph_state": true
+  },
+  "source_policies": {
+    "SASB-structured": "current select_m19_sources structure: boundary -> degree_core -> community_rep -> random_fill",
+    "SASB-random": "uniform random nodes from current GCC with same source budget and seed schedule",
+    "SASB-matched": "random nodes matched to structured source degree-bin and community distribution, with stratum labels recorded"
+  },
+  "dynamic_recompute": {
+    "gcc": "recomputed after every edge removal",
+    "louvain": "adaptive stale partition reused from current SASB implementation",
+    "sampled_dependency": "recomputed on current GCC for selected source policy each step"
+  },
+  "datasets": {
+    "synthetic45": {
+      "enabled": true,
+      "remove_ratio": 1.0,
+      "max_graphs": 0
+    },
+    "realworld_completed_24of28": {
+      "enabled": true,
+      "remove_ratio": 1.0,
+      "graph_ids": [
+        "bio_celegans",
+        "bio_celegans_dir",
+        "bio_celegansneural",
+        "bio_diseasome",
+        "bio_grid_mouse",
+        "bio_grid_plant",
+        "bio_sc_ts",
+        "ca_csphd",
+        "ca_netscience",
+        "football",
+        "ia_email_univ",
+        "ia_enron_only",
+        "ia_infect_dublin",
+        "ia_infect_hyper",
+        "ia_radoslaw_email",
+        "inf_euroroad",
+        "inf_power",
+        "inf_usair97",
+        "rt_retweet",
+        "rt_twitter_copen",
+        "soc_dolphins",
+        "soc_wiki_vote",
+        "web_edu",
+        "web_polblogs"
+      ],
+      "coverage": "24/28 current completed mechanism-diagnostic subset"
+    }
+  },
+  "metrics": [
+    "dataset",
+    "graph_id",
+    "method",
+    "source_policy",
+    "seed",
+    "status",
+    "normalized_auc",
+    "gcc_at_5pct",
+    "gcc_at_10pct",
+    "gcc_at_20pct",
+    "gcc_at_40pct",
+    "first_positive_drop_step",
+    "positive_delta_gcc_rate",
+    "conditional_mean_delta_gcc",
+    "inter_community_ratio",
+    "mean_edge_embeddedness",
+    "mean_common_neighbors",
+    "true_source_traversal_count",
+    "runtime_seconds",
+    "candidate_generation_seconds",
+    "sampled_path_scoring_seconds",
+    "model_scoring_seconds",
+    "louvain_recomputes",
+    "candidate_set_backend",
+    "candidate_set_config",
+    "candidate_set_config_equal_to_structured",
+    "candidate_set_hashes_recorded",
+    "observed_remove_ratio",
+    "removed_edges"
+  ],
+  "safety": {
+    "do_not_modify_v3_v4_v5": true,
+    "do_not_run_large_experiment_without_explicit_run_flag": true,
+    "do_not_overwrite_existing_runs_by_default": true
+  },
+  "max_steps": 0,
+  "formal_run": true,
+  "preregistration": "result/source_policy_ablation_p1/formal_experiment_preregistration.md",
+  "real_validation_path": "result/source_policy_ablation_p1/formal_realworld_validation/graph_validation_summary.csv",
+  "python_executable": "C:\\Users\\86185\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+  "cli_max_graphs": 0,
+  "cli_max_steps": 0,
+  "effective_max_steps": 0,
+  "formal_experiment": true
+}
