@@ -1,0 +1,19 @@
+{
+  "summary_rows": 3,
+  "paired_rows": 3,
+  "effect_rows": 3,
+  "match_quality_rows": 3,
+  "all_finished": true,
+  "step_rows": 120,
+  "methods_ok": true,
+  "source_policy_identical": true,
+  "initial_source_nodes_identical": true,
+  "initial_candidate_counts_equal": true,
+  "candidate_nonempty": true,
+  "source_count_valid": true,
+  "metrics_valid": true,
+  "no_degree_product_fallback": true,
+  "match_fields_recorded": true,
+  "match_quality_numeric": true,
+  "passed": true
+}

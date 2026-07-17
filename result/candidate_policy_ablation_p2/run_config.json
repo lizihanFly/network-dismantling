@@ -1,0 +1,91 @@
+{
+  "experiment_name": "p2_candidate_policy_ablation",
+  "output_dir": "result\\candidate_policy_ablation_p2",
+  "seed": 20260513,
+  "random_seeds": [
+    20260513
+  ],
+  "source_policy": "SASB-structured",
+  "source_budget": 32,
+  "actual_source_count_rule": "min(32, current GCC node count)",
+  "remove_ratio": 1.0,
+  "methods": [
+    "SASB-candidate",
+    "Random-size-matched-candidate",
+    "Structure-matched-candidate"
+  ],
+  "candidate_policies": {
+    "SASB-candidate": {
+      "backend": "evaluate_m19_theory_calibrated.candidate_features",
+      "variant": "conservative",
+      "delta_mode": "none",
+      "k_min": 64,
+      "k_max": 512
+    },
+    "Random-size-matched-candidate": "uniform random candidate edges from current GCC, count matched to SASB candidate count",
+    "Structure-matched-candidate": "random candidate edges from current GCC, count and structural distributions matched to SASB candidate set"
+  },
+  "datasets": {
+    "synthetic45": {
+      "enabled": true,
+      "remove_ratio": 1.0,
+      "max_graphs": 0
+    },
+    "realworld_completed_24of28": {
+      "enabled": true,
+      "remove_ratio": 1.0,
+      "graph_ids": [
+        "bio_celegans",
+        "bio_celegans_dir",
+        "bio_celegansneural",
+        "bio_diseasome",
+        "bio_grid_mouse",
+        "bio_grid_plant",
+        "bio_sc_ts",
+        "ca_csphd",
+        "ca_netscience",
+        "football",
+        "ia_email_univ",
+        "ia_enron_only",
+        "ia_infect_dublin",
+        "ia_infect_hyper",
+        "ia_radoslaw_email",
+        "inf_euroroad",
+        "inf_power",
+        "inf_usair97",
+        "rt_retweet",
+        "rt_twitter_copen",
+        "soc_dolphins",
+        "soc_wiki_vote",
+        "web_edu",
+        "web_polblogs"
+      ],
+      "coverage": "24/28 current completed subset"
+    }
+  },
+  "real_validation_path": "result/source_policy_ablation_p1/formal_realworld_validation/graph_validation_summary.csv",
+  "louvain_interval": 10,
+  "louvain_drop_threshold": 0.05,
+  "diagnostic_louvain_interval": 1,
+  "max_steps": 0,
+  "timeout_seconds": 0,
+  "fixed_variables": [
+    "source_policy",
+    "source_budget_upper_bound",
+    "seed",
+    "network_data",
+    "dynamic_gcc_measurement",
+    "louvain_policy",
+    "sampled_dependency",
+    "edge_score_sorting",
+    "tie_breaking",
+    "auc_calculation",
+    "remove_ratio"
+  ],
+  "interpretation_rule": "SASB-candidate must outperform Structure-matched-candidate to support independent candidate-rule bias.",
+  "python_executable": "C:\\Users\\86185\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+  "cli_max_graphs": 0,
+  "cli_max_steps": 0,
+  "effective_max_steps": 0,
+  "formal_experiment": true
+}
