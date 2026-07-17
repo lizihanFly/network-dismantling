@@ -17,47 +17,31 @@ SASB 的输入是当前图、候选边生成规则、源点预算、源点策略
 完整边介数：
 
 $$
-B(e)
-=
-\sum_{\substack{s,t\in V\\s\ne t}}
-\frac{\sigma_{st}(e)}{\sigma_{st}}.
+B(e)=\sum_{\substack{s,t\in V\\s\ne t}}\frac{\sigma_{st}(e)}{\sigma_{st}}.
 $$
 
 源点采样近似：
 
 $$
-\widehat{B}_{\mathcal{S}}(e)
-=
-\frac{|V|}{|\mathcal{S}|}
-\sum_{s\in\mathcal{S}}
-\delta_s(e).
+\widehat{B}_{\mathcal{S}}(e)=\frac{|V|}{|\mathcal{S}|}\sum_{s\in\mathcal{S}}\delta_s(e).
 $$
 
 单源点依赖量：
 
 $$
-\delta_s(e)
-=
-\sum_{t\in V\setminus\{s\}}
-\frac{\sigma_{st}(e)}{\sigma_{st}}.
+\delta_s(e)=\sum_{t\in V\setminus\{s\}}\frac{\sigma_{st}(e)}{\sigma_{st}}.
 $$
 
 候选集约束：
 
 $$
-e_t
-=
-\underset{e\in C_t(G_t)}{\arg\max}
-\;
-\widehat{B}_{\mathcal{S}_t}(e).
+e_t=\underset{e\in C_t(G_t)}{\arg\max}\;\widehat{B}_{\mathcal{S}_t}(e).
 $$
 
 图状态更新：
 
 $$
-G_{t+1}
-=
-G_t\setminus\{e_t\}.
+G_{t+1}=G_t\setminus\{e_t\}.
 $$
 
 源点采样引入估计方差与系统性欠采样误差；结构化源点可能引入社区边界、高度节点或低嵌入边偏差；候选集是硬约束，直接排除 `C_t(G_t)` 外的边。SASB 不是传统 SGD、mini-batch 或正则化，因为它没有可微目标函数、梯度更新或参数学习过程。
