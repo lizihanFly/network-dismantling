@@ -1,0 +1,10 @@
+﻿file,function,role
+scripts/evaluate_m19_theory_calibrated.py,adaptive_k,adaptive candidate breadth
+scripts/evaluate_m19_theory_calibrated.py,candidate_features,SASB candidate generation
+scripts/evaluate_m18_candidate.py,select_m19_sources,structured source selection
+scripts/evaluate_m18_candidate.py,sampled_candidate_edge_dependencies,sampled shortest-path dependency
+scripts/evaluate_m19_theory_calibrated.py,choose_theory_or_calibrated_edge,candidate scoring and edge selection
+scripts/evaluate_m19_theory_calibrated.py,simulate_attack,dynamic edge removal and GCC metrics
+scripts/evaluate_source_policy_ablation.py,choose_policy_edge,P1 fixed-candidate source-policy selection
+scripts/evaluate_candidate_policy_ablation.py,sasb/random_size_matched/structure_matched candidates,P2 candidate-policy generators
+scripts/evaluate_candidate_policy_ablation_p2b.py,dry_run / one_step_intervention / frozen_source_trajectory,P2b design and planned causal isolation

@@ -1,0 +1,7 @@
+﻿result_set,path,evidence_status
+P1 source-policy ablation,result/source_policy_ablation_p1/formal_results.csv,formal experiment; fixed candidate builder/source budget/seed schedule
+P2 candidate-policy ablation,result/candidate_policy_ablation_p2/formal_results.csv,completed 207 runs but report title is exploratory; one formal seed and trajectory confounding remain
+synthetic45 baseline,result/paper_experiments/baselines/baseline_synthetic45_summary.csv,formal baseline summary for 45 synthetic graphs
+realworld completed subset baseline,result/paper_experiments/baselines/baseline_realworld_m5_completed_per_graph.csv,stage-completed 24/28 real networks; not final full realworld
+SASB/M5 synthetic45 diagnostics,result/sasb_m5_edge_diagnostics/full_synthetic45/graph_method_summary.csv,formal mechanism diagnostic for M5 vs SASB
+SASB/M5 realworld24 diagnostics,result/sasb_m5_edge_diagnostics/full_real_completed_edges_le1305/graph_method_summary.csv,completed-subset mechanism diagnostic

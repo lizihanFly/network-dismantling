@@ -1,0 +1,10 @@
+﻿method,principle,graph_information,source_sampling,candidate_set,dynamic_update,main_cost
+SASB / M19-sampled-BE-fast,structure-aware sampled betweenness on candidate edges,yes,yes,yes,yes,candidate generation + sampled shortest paths
+M5,dynamic exact edge betweenness,yes,no,no,yes,full edge betweenness each step
+M7,dynamic community bridge heuristic,community partition,no,implicit,yes,community bridge scoring
+M12,stale community attack,stale partition,no,implicit,partly/stale,low-cost community scoring
+dynamic-community-bridge,classic dynamic community bridge baseline,community partition,no,implicit,yes,community scoring
+static-community-bridge,static community bridge baseline,initial community,no,implicit,no,one static ordering
+static-edge-betweenness,static edge betweenness baseline,initial full graph,no,no,no,one betweenness pass
+degree-product,endpoint degree product,local degree,no,no,yes,low
+random-edge,uniform random edge deletion,no,no,no,yes/random,low; 3 seeds in baseline stage

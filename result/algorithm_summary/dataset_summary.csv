@@ -1,0 +1,3 @@
+﻿dataset,network_count,formal_completed_networks,source_or_generation,n_min,n_max,m_min,m_max,avg_degree_min,avg_degree_max,community_info
+synthetic45,45,45,baseline_synthetic45_per_graph.csv,65,240,121,1175,3.723,10.495,recorded
+realworld_completed,28 metadata / 24 completed,24,baseline_realworld_m5_completed_per_graph.csv,62,1025,117,2211,2.035,66.0,仓库中未记录

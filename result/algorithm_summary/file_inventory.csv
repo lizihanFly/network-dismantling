@@ -1,0 +1,101 @@
+﻿path,role,bytes
+docs\balanced_candidate_learning_progress.md,documentation,4126
+docs\benchmark_testset_expansion_plan.md,documentation,9375
+docs\current_candidate_learning_results.md,documentation,3768
+docs\experiment_summary_and_next_steps.md,documentation,28136
+docs\heuristic_edge_attack_methods.md,documentation,25885
+docs\publication_roadmap.md,documentation,11871
+docs\related_work_matrix_for_publication.md,documentation,5533
+docs\research_status_summary_20260527.md,documentation,9167
+scripts\evaluate_m19_theory_calibrated.py,implementation/experiment code,107650
+scripts\evaluate_m18_candidate.py,implementation/experiment code,61081
+scripts\evaluate_source_policy_ablation.py,implementation/experiment code,45564
+scripts\evaluate_candidate_policy_ablation.py,implementation/experiment code,58679
+scripts\evaluate_candidate_policy_ablation_p2b.py,P2b dry-run/design only,37843
+scripts\run_paper_experiments.py,paper baseline/stage summary,99803
+scripts\evaluate_heuristic_attacks.py,implementation/experiment code,38970
+result\source_policy_ablation_p1\candidate_equivalence_audit.csv,P1 formal source-policy evidence,29535
+result\source_policy_ablation_p1\candidate_set_equivalence.csv,P1 formal source-policy evidence,932
+result\source_policy_ablation_p1\cost_summary.csv,P1 formal source-policy evidence,5684
+result\source_policy_ablation_p1\effect_sizes.csv,P1 formal source-policy evidence,1719
+result\source_policy_ablation_p1\effect_sizes_reanalysis.csv,P1 formal source-policy evidence,2484
+result\source_policy_ablation_p1\formal_analysis_manifest.json,P1 formal source-policy evidence,453
+result\source_policy_ablation_p1\formal_audit_manifest.json,P1 formal source-policy evidence,396
+result\source_policy_ablation_p1\formal_audit_report.md,P1 formal source-policy evidence,8574
+result\source_policy_ablation_p1\formal_experiment_preregistration.md,P1 formal source-policy evidence,5476
+result\source_policy_ablation_p1\formal_experiment_report.md,P1 formal source-policy evidence,5115
+result\source_policy_ablation_p1\formal_results.csv,P1 formal source-policy evidence,102683
+result\source_policy_ablation_p1\formal_results_reanalysis.csv,P1 formal source-policy evidence,102671
+result\source_policy_ablation_p1\formal_run_config.json,P1 formal source-policy evidence,3460
+result\source_policy_ablation_p1\mechanism_summary.csv,P1 formal source-policy evidence,12011
+result\source_policy_ablation_p1\method_metric_summary_reanalysis.csv,P1 formal source-policy evidence,19131
+result\source_policy_ablation_p1\p1_experiment_config.json,P1 formal source-policy evidence,3190
+result\source_policy_ablation_p1\p1_source_policy_ablation_summary.csv,P1 formal source-policy evidence,1697
+result\source_policy_ablation_p1\paired_comparisons.csv,P1 formal source-policy evidence,170548
+result\source_policy_ablation_p1\paired_comparisons_reanalysis.csv,P1 formal source-policy evidence,170528
+result\source_policy_ablation_p1\run_config.json,P1 formal source-policy evidence,3400
+result\source_policy_ablation_p1\smoke_results.csv,P1 formal source-policy evidence,1697
+result\source_policy_ablation_p1\smoke_validation_report.md,P1 formal source-policy evidence,2150
+result\source_policy_ablation_p1\source_count_audit.csv,P1 formal source-policy evidence,41509
+result\source_policy_ablation_p1\source_match_quality.csv,P1 formal source-policy evidence,225931
+result\source_policy_ablation_p1\statistical_robustness_audit.csv,P1 formal source-policy evidence,2116
+result\candidate_policy_ablation_p2\candidate_match_quality.csv,P2 candidate-policy exploratory outputs,75576
+result\candidate_policy_ablation_p2\cost_summary.csv,P2 candidate-policy exploratory outputs,6099
+result\candidate_policy_ablation_p2\effect_sizes.csv,P2 candidate-policy exploratory outputs,1641
+result\candidate_policy_ablation_p2\formal_experiment_report.md,P2 candidate-policy exploratory outputs,6989
+result\candidate_policy_ablation_p2\formal_manifest.json,P2 candidate-policy exploratory outputs,128
+result\candidate_policy_ablation_p2\formal_results.csv,P2 candidate-policy exploratory outputs,195465
+result\candidate_policy_ablation_p2\p2_candidate_policy_ablation_summary.csv,P2 candidate-policy exploratory outputs,197683
+result\candidate_policy_ablation_p2\p2_experiment_config.json,P2 candidate-policy exploratory outputs,2570
+result\candidate_policy_ablation_p2\paired_comparisons.csv,P2 candidate-policy exploratory outputs,187666
+result\candidate_policy_ablation_p2\run_config.json,P2 candidate-policy exploratory outputs,2777
+result\candidate_policy_ablation_p2\smoke_manifest.json,P2 candidate-policy exploratory outputs,502
+result\candidate_policy_ablation_p2\smoke_results.csv,P2 candidate-policy exploratory outputs,3434
+result\candidate_policy_ablation_p2\smoke_validation_report.md,P2 candidate-policy exploratory outputs,698
+result\candidate_policy_ablation_p2\source_count_summary.csv,P2 candidate-policy exploratory outputs,25593
+result\candidate_policy_ablation_p2b\p2b_dry_run_manifest.json,P2b dry-run/design only,8773
+result\candidate_policy_ablation_p2b\p2b_dry_run_report.md,P2b dry-run/design only,1825
+result\candidate_policy_ablation_p2b\p2b_experiment_config.json,P2b dry-run/design only,2547
+result\candidate_policy_ablation_p2b\p2b_selected_graph_topology.csv,P2b dry-run/design only,2150
+result\paper_experiments\interim_completed_subset_summary.md,paper baseline/stage summary,7892
+result\paper_experiments\paper_experiment_gap_analysis.md,paper baseline/stage summary,1775
+result\paper_experiments\paper_outline.md,paper baseline/stage summary,1017
+result\paper_experiments\paper_ready_summary.md,paper baseline/stage summary,2508
+result\paper_experiments\baselines\baseline_auc_runtime.png,paper baseline/stage summary,101501
+result\paper_experiments\baselines\baseline_availability.csv,paper baseline/stage summary,665
+result\paper_experiments\baselines\baseline_average_gcc_curve.png,paper baseline/stage summary,243042
+result\paper_experiments\baselines\baseline_method_description.md,paper baseline/stage summary,461
+result\paper_experiments\baselines\baseline_realworld_m5_completed_per_graph.csv,paper baseline/stage summary,119353
+result\paper_experiments\baselines\baseline_realworld_m5_completed_summary.csv,paper baseline/stage summary,1244
+result\paper_experiments\baselines\baseline_remaining.csv,paper baseline/stage summary,35
+result\paper_experiments\baselines\baseline_synthetic45_per_graph.csv,paper baseline/stage summary,261381
+result\paper_experiments\baselines\baseline_synthetic45_summary.csv,paper baseline/stage summary,1829
+result\paper_experiments\baselines\realworld_baseline_common_subset_per_graph.csv,paper baseline/stage summary,70289
+result\paper_experiments\baselines\realworld_baseline_common_subset_report.md,paper baseline/stage summary,6728
+result\paper_experiments\baselines\realworld_baseline_common_subset_summary.csv,paper baseline/stage summary,3634
+result\paper_experiments\baselines\realworld_baseline_common_subset_winloss.csv,paper baseline/stage summary,2300
+result\sasb_m5_edge_diagnostics\adaptive_sasb_smoke_report.md,SASB vs M5 mechanism diagnostics,7943
+result\sasb_m5_edge_diagnostics\combined_mechanism_report.md,SASB vs M5 mechanism diagnostics,12984
+result\sasb_m5_edge_diagnostics\why_sasb_wins_or_loses.md,SASB vs M5 mechanism diagnostics,9260
+result\sasb_m5_edge_diagnostics\full_synthetic45\attack_curves.csv,SASB vs M5 mechanism diagnostics,5630946
+result\sasb_m5_edge_diagnostics\full_synthetic45\edge_step_diagnostics.csv,SASB vs M5 mechanism diagnostics,15064163
+result\sasb_m5_edge_diagnostics\full_synthetic45\graph_method_summary.csv,SASB vs M5 mechanism diagnostics,33216
+result\sasb_m5_edge_diagnostics\full_synthetic45\network_diagnosis.csv,SASB vs M5 mechanism diagnostics,17762
+result\sasb_m5_edge_diagnostics\full_synthetic45\phase_auc_by_graph.csv,SASB vs M5 mechanism diagnostics,34982
+result\sasb_m5_edge_diagnostics\full_synthetic45\run_status.csv,SASB vs M5 mechanism diagnostics,6835
+result\sasb_m5_edge_diagnostics\full_synthetic45\structure_summary_by_phase.csv,SASB vs M5 mechanism diagnostics,1210
+result\sasb_m5_edge_diagnostics\full_real_completed_edges_le1305\attack_curves.csv,SASB vs M5 mechanism diagnostics,12152449
+result\sasb_m5_edge_diagnostics\full_real_completed_edges_le1305\edge_step_diagnostics.csv,SASB vs M5 mechanism diagnostics,33512130
+result\sasb_m5_edge_diagnostics\full_real_completed_edges_le1305\graph_method_summary.csv,SASB vs M5 mechanism diagnostics,18397
+result\sasb_m5_edge_diagnostics\full_real_completed_edges_le1305\network_diagnosis.csv,SASB vs M5 mechanism diagnostics,9604
+result\sasb_m5_edge_diagnostics\full_real_completed_edges_le1305\phase_auc_by_graph.csv,SASB vs M5 mechanism diagnostics,19212
+result\sasb_m5_edge_diagnostics\full_real_completed_edges_le1305\run_status.csv,SASB vs M5 mechanism diagnostics,247
+result\sasb_m5_edge_diagnostics\full_real_completed_edges_le1305\structure_summary_by_phase.csv,SASB vs M5 mechanism diagnostics,1283
+result\structure_bias_audit\budget_gcc_summary.csv,,16307
+result\structure_bias_audit\field_availability.csv,,2304
+result\structure_bias_audit\file_inventory.csv,,8512
+result\structure_bias_audit\outcome_structure_summary.csv,,3092
+result\structure_bias_audit\phase_bias_by_graph.csv,,140119
+result\structure_bias_audit\phase_bias_summary.csv,,2791
+result\structure_bias_audit\structure_bias_audit_report.md,,6510
+result\structure_bias_audit\structure_bias_summary.csv,,48369

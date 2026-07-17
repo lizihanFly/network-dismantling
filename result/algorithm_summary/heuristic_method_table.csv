@@ -1,0 +1,8 @@
+﻿method,principle,uses_full_graph_info,source_sampling,candidate_set,dynamic_update,main_cost
+SASB,sampled dependency over SASB candidate set,partial current graph,yes,yes,yes,candidate generation + sampled paths
+M5 dynamic edge betweenness,exact edge betweenness on current GCC,yes,no,no,yes,full betweenness recomputation
+M7 dynamic community bridge,dynamic community bridge score,community partition,no,implicit,yes,Louvain/community scoring
+M12 stale community attack,stale community attack,initial/stale partition,no,implicit,partly,low runtime
+Degree product,endpoint degree product,local degree,no,no,yes,low
+Static edge betweenness,initial edge betweenness order,yes initial graph,no,no,no,one full betweenness pass
+Static community bridge,static community bridge order,initial community,no,implicit,no,low/moderate
