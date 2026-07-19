@@ -1,0 +1,15 @@
+{
+  "all_methods_finished": true,
+  "required_fields_present": true,
+  "auc_runtime_gcc_no_nan": true,
+  "candidate_set_is_current_gcc": true,
+  "non_frozen_source_count_correct": true,
+  "frozen_source_not_regenerated": true,
+  "source_hash_scope_is_explicit": true,
+  "frozen_active_source_count_not_above_budget_or_gcc": true,
+  "smoke_passed": true,
+  "pilot_smoke_selected_graph_count": true,
+  "pilot_smoke_expected_run_count": true,
+  "pilot_smoke_methods_complete": true,
+  "pilot_smoke_passed": true
+}

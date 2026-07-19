@@ -1,0 +1,55 @@
+{
+  "estimated_runs": 2136,
+  "estimated_runtime_seconds": 206622.86639768092,
+  "range_seconds": [
+    103311.43319884046,
+    413245.73279536184
+  ],
+  "range_hours": [
+    28.697620333011237,
+    114.79048133204495
+  ],
+  "method_estimates": [
+    {
+      "method": "SASB-N-structured",
+      "estimated_runtime_seconds": 36000.29728255582
+    },
+    {
+      "method": "SASB-N-random-source",
+      "estimated_runtime_seconds": 30367.730457127447
+    },
+    {
+      "method": "SASB-N-degree-source",
+      "estimated_runtime_seconds": 32628.57923298715
+    },
+    {
+      "method": "SASB-N-frozen-source",
+      "estimated_runtime_seconds": 25944.902130635557
+    },
+    {
+      "method": "M5",
+      "estimated_runtime_seconds": 66817.59105110832
+    },
+    {
+      "method": "dynamic-degree",
+      "estimated_runtime_seconds": 417.09441909574286
+    },
+    {
+      "method": "dynamic-closeness",
+      "estimated_runtime_seconds": 8298.14694884969
+    },
+    {
+      "method": "dynamic-k-core",
+      "estimated_runtime_seconds": 531.525296831479
+    },
+    {
+      "method": "random",
+      "estimated_runtime_seconds": 5616.9995784896755
+    }
+  ],
+  "assumptions": [
+    "Uses pilot-smoke runtime by dataset and method as the baseline.",
+    "Scales by mean node-count x edge-count complexity and the requested run multiplicity.",
+    "This is a planning range, not a benchmark or a guarantee; large M5/dynamic-closeness graphs may dominate the tail."
+  ]
+}
