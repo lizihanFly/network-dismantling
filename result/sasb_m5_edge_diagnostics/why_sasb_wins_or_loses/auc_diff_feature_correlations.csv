@@ -1,8 +1,0 @@
-﻿feature,spearman_corr_with_sasb_minus_m5_auc
-modularity,-0.20347826086956516
-bridge_ratio,0.02870813668708751
-core2_size_ratio,-0.09047412774112427
-degree_cv,0.18395303761670867
-clustering_coefficient,0.09217391304347824
-average_edge_embeddedness,0.13999999999999999
-inter_community_edge_ratio,0.13826086956521738
