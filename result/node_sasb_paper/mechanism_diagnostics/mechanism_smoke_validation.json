@@ -1,0 +1,15 @@
+{
+  "run_count": true,
+  "network_count": true,
+  "method_count": true,
+  "seed_count": true,
+  "all_finished": true,
+  "source_rows_nonempty": true,
+  "ranking_rows_nonempty": true,
+  "source_budget_correct": true,
+  "active_source_valid": true,
+  "candidate_scope_valid": true,
+  "no_nan_core_source_metrics": true,
+  "no_nan_core_ranking_metrics": true,
+  "passed": true
+}
